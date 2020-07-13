@@ -1,0 +1,9 @@
+interface IACTION_LOGIN{
+  LOGIN: string,
+  LOGIN_BEFORE: string
+}
+
+export const ACTION_LOGIN: IACTION_LOGIN = {
+  LOGIN: 'LOGIN',
+  LOGIN_BEFORE: 'LOGIN_BEFORE'
+}

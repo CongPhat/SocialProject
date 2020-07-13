@@ -1,0 +1,7 @@
+interface IACTION_TODO{
+  ADD_TODO_LIST: string
+}
+
+export const ACTION_TODO: IACTION_TODO = {
+  ADD_TODO_LIST: 'ADD_TODO_LIST'
+}
