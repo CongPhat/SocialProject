@@ -21,16 +21,31 @@ export const loading = () => {
     dispatch({type: ACTION_USER.GET_USER_BEFORE});
   }
 }
+export const getUserSuccess = (data: any) => {
+  return function(dispatch: any) {
+    dispatch({type: ACTION_USER.GET_USER_SUCCESS, data: data});
+  }
+}
+export const getUserFailed = () => {
+  return function(dispatch: any) {
+    dispatch({type: ACTION_USER.GET_USER_FAILED});
+  }
+}
+export const getUserAfter = () => {
+  return function(dispatch: any) {
+    dispatch({type: ACTION_USER.GET_USER_AFTER});
+  }
+}
 export const fetchUser = () => {
   return async function(dispatch: any) {
     dispatch(loading());
     try {
       const respon = await getUserApi();
-      dispatch({type: ACTION_USER.GET_USER_SUCCESS, data: respon.data});
+      dispatch(getUserSuccess(respon.data));
     } catch (err) {
-      dispatch({type: ACTION_USER.GET_USER_FAILED});
+      dispatch(getUserFailed());
     }
-    dispatch({type: ACTION_USER.GET_USER_AFTER});
+    dispatch(getUserAfter());
   }
 }
 export const deleteUser = (idUser: any) => {
