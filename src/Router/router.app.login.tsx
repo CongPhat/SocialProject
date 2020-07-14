@@ -10,6 +10,10 @@ const ToDoList = Loadable({
   loader: () => import('@Modules/ToDoList'),
   loading: LoadingPage
 })
+const User = Loadable({
+  loader: () => import('@Modules/User'),
+  loading: LoadingPage
+})
 
 export const routerAppLogin: Object[] = [
   {
@@ -21,6 +25,11 @@ export const routerAppLogin: Object[] = [
     path: '/todolist',
     exact: true,
     main: ({match, location, history}: any) => <ToDoList  />
+  },
+  {
+    path: '/user',
+    exact: true,
+    main: ({match, location, history}: any) => <User  />
   },
   {
     path: '',

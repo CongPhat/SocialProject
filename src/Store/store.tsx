@@ -1,7 +1,8 @@
-import { createStore } from 'redux';
-import { initState } from './State/RootState';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from  'redux-thunk';
 import { RootReducer } from './Reducer/RootReducer';
 
 export const store = createStore(
-  RootReducer
+  RootReducer,
+  applyMiddleware(thunk)
 )
