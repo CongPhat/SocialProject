@@ -1,7 +1,12 @@
 import {ACTION_USER} from './User.Action';
 import jwt from 'jsonwebtoken';
 
-const {GET_USER_BEFORE, GET_USER_SUCCESS, GET_USER_FAILED} = ACTION_USER;
+const {GET_USER_BEFORE,
+  GET_USER_SUCCESS,
+  GET_USER_AFTER,
+  GET_USER_FAILED,
+  DELETE_USER
+} = ACTION_USER;
 
 interface IInitState{
   loading: boolean
@@ -27,6 +32,11 @@ export const UserReducer = (state = initStateUser, action:any) => {
         ...state,
         loading: true
       }
+    case GET_USER_AFTER:
+      console.log('saukhixonghet')
+      return {
+        ...state
+      }
     case GET_USER_SUCCESS:
       return {
         ...state,
@@ -37,6 +47,11 @@ export const UserReducer = (state = initStateUser, action:any) => {
       return {
         ...state,
         loading: false
+      }
+    case DELETE_USER:
+      return {
+        ...state,
+        data: state.data.filter(item => action.idDelete !== item.id)
       }
     default :
       return state

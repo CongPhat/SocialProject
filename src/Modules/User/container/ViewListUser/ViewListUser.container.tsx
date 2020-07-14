@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import {fetchUser} from '@Store/Reducer/User/User.Action';
+import {fetchUser, deleteUser} from '@Store/Reducer/User/User.Action';
 import ListUserComponent from '@Modules/User/component/ItemUser/index';
 
 interface Props {
@@ -13,14 +13,19 @@ interface RootState {
 
 const ViewListUserContainer: React.FC<Props> = ({}) => {
   const dispatch = useDispatch();
-  console.log(123);
   useEffect(() => {
     dispatch(fetchUser());
   }, [])
 
+  const handleDelete = useCallback((item) => {
+    dispatch(deleteUser(item.id));
+  }, []);
+
   return (
     <>
-      <ListUserComponent />
+      <ListUserComponent
+        deleteUser={handleDelete}
+      />
     </>
   )
 }
