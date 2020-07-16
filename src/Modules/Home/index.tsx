@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import LazyLoadComponent from '@HOC/LazyLoadComponent';
+import LazyLoadComponent from '@Common/LazyLoadComponent';
 const img: string = require('@assets/images/123.jpg').default;
-// import LazyLoadComponent from 'lazyloadphat/lib/LazyLoadComponent';
+
 
 interface Props {
 

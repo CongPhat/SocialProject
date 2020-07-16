@@ -14,6 +14,10 @@ const User = Loadable({
   loader: () => import('@Modules/User'),
   loading: LoadingPage
 })
+const Market = Loadable({
+  loader: () => import('@Modules/Market/market'),
+  loading: LoadingPage
+})
 
 export const routerAppLogin: Object[] = [
   {
@@ -30,6 +34,11 @@ export const routerAppLogin: Object[] = [
     path: '/user',
     exact: true,
     main: ({match, location, history}: any) => <User  />
+  },
+  {
+    path: '/market',
+    exact: true,
+    main: ({match, location, history}: any) => <Market  />
   },
   {
     path: '',

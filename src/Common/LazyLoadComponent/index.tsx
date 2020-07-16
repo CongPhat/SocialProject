@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createFactory } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import LoadingLazy from './loading';
 
 interface Props {
@@ -11,12 +11,12 @@ const LazyLoadComponent:React.FC<Props> = ({conFigEndpoint, statusLazy, ...props
   const [ComponentLazy, setComponentLazy] = useState<React.FC | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const LazyLoadFunction = async () => {
+  const LazyLoadFunction = useCallback(async () => {
     conFigEndpoint().then(Component => {
       setLoading(false);
       setComponentLazy(() => Component.default);
     });
-  }
+  }, [])
 
   useEffect(() => {
     if(statusLazy) {
@@ -41,4 +41,4 @@ const LazyLoadComponent:React.FC<Props> = ({conFigEndpoint, statusLazy, ...props
   )
 }
 
-export default LazyLoadComponent;
+export default React.memo(LazyLoadComponent);

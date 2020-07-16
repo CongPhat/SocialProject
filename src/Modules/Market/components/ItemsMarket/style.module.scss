@@ -1,0 +1,24 @@
+.itemsMarket {
+    &Main {
+
+    }
+    &Image {
+        img {
+            border-radius: 5px;
+        }
+    }
+    &Infor {
+        margin: 15px 0;
+        .price {
+            font-family: 'Nunito-Bold';
+            font-size: 18px;
+        }
+        .name {
+
+        }
+        .city {
+            color: #BDBDBD;
+        }
+    }
+    
+}

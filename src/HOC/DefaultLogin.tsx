@@ -5,7 +5,7 @@ function DefaultLogin(Component: React.ComponentType<any | string>) {
   return withRouter(({history}: RouteComponentProps) => {
     return (
       <>
-        <header>login roi ne</header>
+        {/* <header>login roi ne</header> */}
         <Component />
       </>
     )

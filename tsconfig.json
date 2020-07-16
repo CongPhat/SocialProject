@@ -21,6 +21,7 @@
       "@Common/*": ["Common/*"],
       "@Router/*": ["Router/*"],
       "@Store/*": ["Store/*"],
+      "@DataTemplate/*": ["DataTemplate/*"],
     },
   },
   "TypeRoots": [
