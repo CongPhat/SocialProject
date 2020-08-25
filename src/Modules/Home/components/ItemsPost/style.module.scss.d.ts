@@ -3,6 +3,7 @@
 interface CssExports {
   'itemPostElement': string;
   'itemPostElementContent': string;
+  'itemPostElementHeader': string;
   'itemPostElementHeaderContent': string;
   'itemPostElementSocial': string;
   'itemPostElementSocialContent': string;

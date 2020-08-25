@@ -101,20 +101,20 @@ module.exports = {
       chunkFilename: '[id].css',
     }),
 
-    new PurgecssPlugin({
-      paths: [
-        `${assetsPath}/index.html`,
-        ...glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
-        ...glob.sync(`${path.join(__dirname, 'node_modules')}/antd/es/**/*.css`, { nodir: false }),
-      ],
-      extractors: [
-        {
-          extractor: content => content.match(/([a-zA-Z-]+)(?= {)/g) || [],
-          extensions: ['css'],
-        },
-      ],
-      only: ['bundle', 'vendor', 'module'],
-    }),
+    // new PurgecssPlugin({
+    //   paths: [
+    //     `${assetsPath}/index.html`,
+    //     ...glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
+    //     ...glob.sync(`${path.join(__dirname, 'node_modules')}/antd/es/**/*.css`, { nodir: false }),
+    //   ],
+    //   extractors: [
+    //     {
+    //       extractor: content => content.match(/([a-zA-Z-]+)(?= {)/g) || [],
+    //       extensions: ['css'],
+    //     },
+    //   ],
+    //   only: ['bundle', 'vendor', 'module'],
+    // }),
     // new CopyWebpackPlugin(
     //   [{ from: 'src/assets/images', to: 'src/assets/images' }]
     // ),

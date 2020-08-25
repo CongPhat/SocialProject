@@ -134,15 +134,15 @@ var config = {
         keep_fnames: true,
       },
     }),
-    new PreloadWebpackPlugin({
-      rel: 'preload',
-      as(entry) {
-        if (/\.css$/.test(entry)) return 'style'
-        if (/\.woff$/.test(entry)) return 'font'
-        if (/\.png$/.test(entry)) return 'image'
-        return 'script'
-      },
-    }),
+    // new PreloadWebpackPlugin({
+    //   rel: 'preload',
+    //   as(entry) {
+    //     if (/\.css$/.test(entry)) return 'style'
+    //     if (/\.woff$/.test(entry)) return 'font'
+    //     if (/\.png$/.test(entry)) return 'image'
+    //     return 'script'
+    //   },
+    // }),
     // new PurgecssPlugin({
     //   paths: [
     //     `${assetsPath}/index.html`,
@@ -155,7 +155,7 @@ var config = {
     //       extensions: ['css'],
     //     },
     //   ],
-    //   only: ['bundle', 'styles'],
+    //   only: ['bundle', 'vendor'],
     // }),
   ],
   optimization: {

@@ -7,7 +7,7 @@ import { PostsReducer } from './Posts/Posts.Reducer'
 
 export const RootReducer = combineReducers({
   toDoList: ToDoListReducer,
-  login: LoginReducer,
+  LoginReducer,
   user: UserReducer,
   market: MarketReducer,
   PostsReducer,

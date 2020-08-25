@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import styles from './Posts.module.scss'
-import { getAll } from '@Modules/Home/service'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDataPosts } from '@Store/Reducer/Posts/Posts.Action'
 import ItemsPost from '@Modules/Home/components/ItemsPost'

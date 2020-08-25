@@ -1,56 +1,59 @@
-import {ACTION_LOGIN} from './Login.Action';
-import jwt from 'jsonwebtoken';
+import { ACTION_LOGIN } from './Login.Action'
+import jwt from 'jsonwebtoken'
 
-const {LOGIN, LOGIN_BEFORE} = ACTION_LOGIN;
+const { LOGIN, LOGIN_BEFORE, LOADING } = ACTION_LOGIN
 
-interface IInitState{
-  privateLogin: boolean,
+interface IInitState {
+  privateLogin: boolean
   dataUser: {
-    name: string,
-    id: string | number,
+    email: string
   }
+  loading: boolean
 }
 
-export interface IDataUserDecode{
-  name: string,
-  iat: number,
-  sub: string,
+export interface IDataUserDecode {
+  email: string
+  iat: number
+  sub: string
 }
 
 export const initStateLogin: IInitState = {
   privateLogin: false,
   dataUser: {
-    name: '',
-    id: ''
-  }
+    email: '',
+  },
+  loading: false,
 }
 
-export const LoginReducer = (state = initStateLogin, action:any) => {
-  switch(action.type) {
+export const LoginReducer = (state = initStateLogin, action: any) => {
+  switch (action.type) {
     case LOGIN:
-      const {value} = action;
-      const dataUserDecode: IDataUserDecode = JSON.parse(JSON.stringify(jwt.decode(value)));
-      localStorage.setItem('jwtToken', action.value);
+      const dataUserDecode: IDataUserDecode = JSON.parse(JSON.stringify(jwt.decode(action.payload)))
+      localStorage.setItem('jwtToken', action.payload)
       return {
         ...state,
         privateLogin: true,
         dataUser: {
-          name: dataUserDecode.name,
-          id: dataUserDecode.iat
-        }
+          email: dataUserDecode.email,
+        },
       }
-    case LOGIN_BEFORE:
-      const jwtToken = localStorage.getItem('jwtToken');
-      const dataUserDecodeToken: IDataUserDecode = JSON.parse(JSON.stringify(jwt.decode(jwtToken)));
+    case LOADING:
       return {
         ...state,
-        privateLogin: true,
-        dataUser: {
-          name: dataUserDecodeToken.name,
-          id: dataUserDecodeToken.iat
-        }
+        loading: !state.loading,
       }
-    default :
+    // case LOGIN_BEFORE:
+    //   const jwtToken = localStorage.getItem('jwtToken')
+    //   const dataUserDecodeToken: IDataUserDecode = JSON.parse(JSON.stringify(jwt.decode(jwtToken)))
+    //   return {
+    //     ...state,
+    //     privateLogin: true,
+    //     dataUser: {
+    //       name: dataUserDecodeToken.name,
+    //       id: dataUserDecodeToken.iat,
+    //     },
+    //   }
+    default:
       return state
   }
 }

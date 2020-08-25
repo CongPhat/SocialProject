@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { ACTION_LOGIN } from '@Store/Reducer/Login/Login.Action'
+import { useDispatch, useSelector } from 'react-redux'
+import { ACTION_LOGIN, login } from '@Store/Reducer/Login/Login.Action'
 import LoginFaceBook from '@Modules/Login/components/LoginFacebook/LoginFaceBook'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Form, Input, Button } from 'antd'
 import { Token } from '@Config/variable'
 import styles from './style.module.scss'
+import useMemoSelector from '@Common/useMemoSelector'
 
 interface Props {}
 
@@ -20,14 +21,11 @@ const tailLayout = {
 }
 
 const FormLogin: React.FC<Props> = ({ history }: RouteComponentProps) => {
-  const [user, setUser] = useState<string>('')
-  const dispath = useDispatch()
+  const { loading } = useMemoSelector('LoginReducer', ['loading'])
+  const dispatch = useDispatch()
 
   const onFinish = (values: any) => {
-    console.log('Success:', values)
-    //goi api ve nhan token
-    dispath({ type: ACTION_LOGIN.LOGIN, value: Token })
-    history.push('/')
+    dispatch(login(values, history))
   }
 
   const onFinishFailed = (errorInfo: any) => {
@@ -46,22 +44,21 @@ const FormLogin: React.FC<Props> = ({ history }: RouteComponentProps) => {
         onFinishFailed={onFinishFailed}
         // className="ant-form ant-form-horizontal"
       >
-        <Form.Item
-          name="username"
-          rules={[{ required: true, message: 'Vui lòng nhập số điện thoại hoặc email!' }]}
-        >
-          <Input placeholder="Số điện thoại hoặc email" />
+        <Form.Item name="email" rules={[{ required: true, message: 'Vui lòng nhập số email!' }]}>
+          <Input placeholder="Email" />
         </Form.Item>
 
         <Form.Item name="password" rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}>
           <Input.Password placeholder="Mật khẩu" />
         </Form.Item>
 
-        <Form.Item>
-          <Button htmlType="submit">Đăng nhập</Button>
-        </Form.Item>
+        <div className="text-center">
+          <Button htmlType="submit" loading={loading}>
+            Đăng nhập
+          </Button>
+        </div>
       </Form>
-      <LoginFaceBook />
+      {/* <LoginFaceBook /> */}
     </div>
   )
 }
