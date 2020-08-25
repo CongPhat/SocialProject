@@ -1,39 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import LazyLoadComponent from '@Common/LazyLoadComponent';
-const img: string = require('@assets/images/123.jpg').default;
+import React, { useState, useEffect, Suspense, useRef } from 'react'
+import { getAll } from './service'
+import styles from './style.module.scss'
+import PostsContainer from './container/Posts/Posts.container'
 
+const { home } = styles
 
-interface Props {
-
-}
+interface Props {}
 
 const Home: React.FC<Props> = () => {
-  const [visiblePost, setVisiblePost] = useState(false);
-  const [Post, setPost] = useState<React.FC | null>(null);
+  // const [visiblePost, setVisiblePost] = useState(false)
+  // const [Post, setPost] = useState<React.FC | null>(null)
+  // const ref = useRef()
 
-  const handle = () => {
-    setVisiblePost(true);
-  }
+  // const handle = () => {
+  //   setVisiblePost(pre => !pre)
+  // }
+  // useEffect(() => {
+  //   setVisiblePost(true)
+  //   getAll().then(res => {
+  //     console.log(res)
+  //   })
 
-  // console.log(LazyLoadComponent);
-
+  //   const constrain = { video: true }
+  //   const success = (stream: any) => {
+  //     ref.current.srcObject = stream
+  //   }
+  //   const error = (e: any) => {
+  //     console.log('error', e)
+  //   }
+  //   navigator.getUserMedia(constrain, success, error)
+  // }, [])
 
   return (
-    <div className={``}>
-      <div className={`row`}>
-        <div className='col-md-3'></div>
-        <div className='col-md-4'>
-        </div>
-        <div className='col-md-5'>
-          <button onClick={handle}>Click</button>
-        </div>
-        <LazyLoadComponent
-          conFigEndpoint={() => import('@Modules/Home/container/LazyLoad')}
-          statusLazy={visiblePost}
-          abc={123}
-          handleTest={handle}
-        />
-      </div>
+    <div className={`${home}`}>
+      <PostsContainer />
     </div>
   )
 }

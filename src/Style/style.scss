@@ -1,29 +1,25 @@
-@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-@import "../../node_modules/antd/dist/antd.min.css";
 @import '@assets/scss/_variable.scss';
 @font-face {
-  font-family: "Nunito-Regular";
-  src: url("../assets/fonts/Nunito-Regular.ttf");
+  font-family: 'Segoe UI';
+  src: url('../assets/fonts/Segoe-UI.ttf');
 }
 
 @font-face {
-  font-family: "Nunito-Bold";
-  src: url("../assets/fonts/Nunito-Bold.ttf");
-}
-
-@font-face {
-  font-family: "Nunito-Italic";
-  src: url("../assets/fonts/Nunito-Italic.ttf");
+  font-family: 'Segoe UI Bold';
+  src: url('../assets/fonts/Segoe-UI-Bold.ttf');
 }
 
 body {
-  font-family: "Nunito-Regular" !important;
+  font-family: 'Segoe UI' !important;
   color: black;
 }
 
 /*---------------------------------Custom Antd--------------------------------*/
 .ant-form-item {
   margin-bottom: 40px !important;
+  .ant-row {
+    margin-top: 0;
+  }
 }
 .ant-input {
   border-radius: 20px !important;
@@ -31,7 +27,7 @@ body {
   background: $gray-1 !important;
   color: black !important;
   &::placeholder {
-    color: #A4A4A4 !important;
+    color: #a4a4a4 !important;
   }
 }
 .ant-input-affix-wrapper {
@@ -43,8 +39,9 @@ body {
     padding: 0 !important;
   }
 }
-.ant-form-item-has-error{
-  .ant-input, .ant-input-affix-wrapper {
+.ant-form-item-has-error {
+  .ant-input,
+  .ant-input-affix-wrapper {
     background: $gray-1 !important;
     &:hover {
       background: $gray-1 !important;
@@ -67,7 +64,6 @@ body {
     color: $white !important;
   }
 }
-
 
 /*-----------------------------Custom Bootstrap-----------------------------*/
 .row {

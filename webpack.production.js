@@ -1,18 +1,22 @@
-var webpack = require("webpack");
-var path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin"); // mini files all
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+var webpack = require('webpack')
+var path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin') // mini files all
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 // const CompressionPlugin = require('compression-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { TsConfigPathsPlugin } = require("awesome-typescript-loader");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const PurgecssPlugin = require('purgecss-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
+var BrotliPlugin = require('brotli-webpack-plugin')
+const PreloadWebpackPlugin = require('preload-webpack-plugin')
 
 const rootDir = path.resolve(process.cwd())
 const assetsPath = path.resolve(rootDir, 'src/assets')
 const srcPath = path.resolve(rootDir, 'src')
+const glob = require('glob')
 
 // CSS Splitting
 // var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -22,12 +26,12 @@ const devServer = {
   disableHostCheck: true,
   historyApiFallback: true,
   overlay: true,
-  stats: "minimal",
+  stats: 'minimal',
   inline: true,
   compress: true,
-  contentBase: "/",
-  clientLogLevel: "error",
-};
+  contentBase: '/',
+  clientLogLevel: 'error',
+}
 // const VENDOR_LIBS = ["axios", "react", "react-dom", "react-redux", "react-router-dom", "redux"];
 var config = {
   // entry: ['react-hot-loader/patch', path.join(__dirname, './src/shared/index.tsx')],
@@ -38,82 +42,85 @@ var config = {
     // vendor: VENDOR_LIBS,
   },
   output: {
-    path: path.join(__dirname, "dist"),
-    filename: "[chunkhash].[chunkhash].js",
-    chunkFilename: "[chunkhash].bundle.js",
+    path: path.join(__dirname, 'dist'),
+    filename: '[chunkhash].[chunkhash].js',
+    chunkFilename: '[chunkhash].bundle.js',
   },
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
       },
       {
         /*bien dich soure map sang ts*/
-        enforce: "pre",
+        enforce: 'pre',
         test: /\.js?$/,
-        loader: "source-map-loader",
+        loader: 'source-map-loader',
         exclude: [
           // instead of /\/node_modules\//
-          path.join(process.cwd(), "node_modules"),
+          path.join(process.cwd(), 'node_modules'),
         ],
       },
       {
-        loader: "file-loader",
+        loader: 'file-loader',
         test: /\.gz$|\.jpe?g$|\.gif$|\.png$|\.svg$|\.woff$|\.woff2|\.eot$|.ttf$|\.wav$|\.mp3$|\.icon$|\?[a-z0-9]+?$/,
         query: {
-          name: "[name]-[md5:hash:8].[ext]",
+          name: '[name]-[md5:hash:8].[ext]',
         },
       },
       {
         test: /\.module\.s(a|c)ss$/,
         loader: [
           MiniCssExtractPlugin.loader,
-          { loader: "css-modules-typescript-loader"},
+          { loader: 'css-modules-typescript-loader' },
           {
             loader: 'css-loader',
             options: {
               modules: true,
-              sourceMap: false
-            }
+              sourceMap: false,
+            },
           },
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: false
-            }
+              sourceMap: false,
+            },
           },
-        ]
+        ],
       },
       {
         test: /\.s(a|c)ss$/,
         exclude: /\.module.(s(a|c)ss)$/,
         loader: [
           MiniCssExtractPlugin.loader,
-          { loader: "css-modules-typescript-loader"},
+          { loader: 'css-modules-typescript-loader' },
           'css-loader',
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: false
-            }
+              sourceMap: false,
+            },
           },
-        ]
-      }
+        ],
+      },
     ],
   },
   plugins: [
     new BundleAnalyzerPlugin(),
     new HtmlWebpackPlugin({
-      title: "Code Splitting",
+      title: 'Code Splitting',
       template: `${assetsPath}/index.html`,
-      chunksSortMode: "none",
+      chunksSortMode: 'none',
     }),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css",
+      filename: '[name].css',
+      chunkFilename: '[id].css',
     }),
-    new CleanWebpackPlugin(["dist"]),
+    // new PurgecssPlugin({
+    //   paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
+    // }),
+    new CleanWebpackPlugin(['dist']),
     new UglifyJsPlugin({
       uglifyOptions: {
         warnings: false,
@@ -127,38 +134,62 @@ var config = {
         keep_fnames: true,
       },
     }),
-    // new CopyWebpackPlugin(
-    //   [{ from: 'src/assets/images', to: 'src/assets/images' }]
-    // ),
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      as(entry) {
+        if (/\.css$/.test(entry)) return 'style'
+        if (/\.woff$/.test(entry)) return 'font'
+        if (/\.png$/.test(entry)) return 'image'
+        return 'script'
+      },
+    }),
+    // new PurgecssPlugin({
+    //   paths: [
+    //     `${assetsPath}/index.html`,
+    //     ...glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
+    //     ...glob.sync(`${path.join(__dirname, 'node_modules')}/antd/es/**/*.css`, { nodir: false }),
+    //   ],
+    //   extractors: [
+    //     {
+    //       extractor: content => content.match(/([a-zA-Z-]+)(?= {)/g) || [],
+    //       extensions: ['css'],
+    //     },
+    //   ],
+    //   only: ['bundle', 'styles'],
+    // }),
   ],
   optimization: {
     splitChunks: {
       name: true,
       cacheGroups: {
         commons: {
-          chunks: "initial",
+          chunks: 'initial',
           minChunks: 2,
         },
         vendors: {
           test: /[\\/]node_modules[\\/]/,
-          chunks: "all",
+          chunks: 'all',
           priority: -10,
+        },
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true,
         },
       },
     },
     runtimeChunk: true,
   },
-  mode: "production", //production,development
-  devtool: "cheap-module-source-map", //cheap-module-source-map
+  mode: 'production', //production,development
+  devtool: 'cheap-module-source-map', //cheap-module-source-map
   performance: {
-    hints: process.env.NODE_ENV === "production" ? "warning" : false,
+    hints: process.env.NODE_ENV === 'production' ? 'warning' : false,
   },
   resolve: {
-    extensions: [".js", ".ts", ".tsx", '.css', '.scss'],
-    plugins: [
-      new TsConfigPathsPlugin(/* { tsconfig, compiler } */)
-    ]
+    extensions: ['.js', '.ts', '.tsx', '.css', '.scss'],
+    plugins: [new TsConfigPathsPlugin(/* { tsconfig, compiler } */)],
   },
   devServer,
-};
-module.exports = config;
+}
+module.exports = config

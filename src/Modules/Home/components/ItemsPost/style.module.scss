@@ -1,0 +1,61 @@
+.itemPostElement {
+  border: 1px solid #dbdbdb;
+  margin-bottom: 60px;
+  &Header {
+    &Content {
+      padding: 10px 16px;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid black;
+        padding: 2px;
+        position: relative;
+      }
+      a {
+        margin-left: 15px;
+        font-weight: 600;
+        font-size: 14px;
+        color: #262626;
+      }
+    }
+  }
+  &Content {
+    img {
+      width: 100%;
+    }
+  }
+  &Social {
+    padding: 15px;
+    &Tag {
+      i {
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 15px;
+        &:nth-child(2) {
+          font-size: 25px;
+        }
+      }
+    }
+    &Like {
+      p {
+        color: #262626;
+        font-weight: 600;
+      }
+    }
+    &Content {
+      span {
+        display: inline-block;
+        &:first-child {
+          margin-right: 10px;
+          color: #262626;
+          font-weight: 600;
+        }
+      }
+    }
+    &ViewAll {
+      cursor: pointer;
+      color: #8e8e8e;
+    }
+  }
+}

@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {useSelector} from 'react-redux';
 import styles from './style.module.scss';
 
 interface Props {
     item: any;
     key: any;
+    showItemModal: (item?: any) => void
 }
 
 interface RootState {
     market: any
 }
 
-const ItemsMarket: React.FC<Props> = ({item}) => {
-    // console.log(item);
-    
+const ItemsMarket: React.FC<Props> = ({item, showItemModal}) => {
     return (
         <div className={`itemsMarket col-md-2`}>
-           <div className='itemsMarketMain'>
+           <div className={styles.itemsMarketMain} onClick={useCallback(() => {showItemModal(item)}, [item])}>
                 <div className={styles.itemsMarketImage}>
                     <img src={item.image} alt={item.name} style={{width: '100%'}}/>
                 </div>

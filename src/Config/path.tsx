@@ -1,1 +1,1 @@
-export let BASE_URL = "https://jsonplaceholder.typicode.com";
+export let BASE_URL = 'http://localhost:3000'

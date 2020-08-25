@@ -25,7 +25,6 @@ export const initStateUser: IInitState = {
 }
 
 export const UserReducer = (state = initStateUser, action:any) => {
-  console.log(action);
   switch(action.type) {
     case GET_USER_BEFORE:
       return {

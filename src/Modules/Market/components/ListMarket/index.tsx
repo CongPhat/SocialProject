@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import ItemsMarket from '@Modules/Market/components/ItemsMarket';
-import {fetchMarket, handleRemoveLoadData} from '@Store/Reducer/Market/Market.Action';
+import {fetchMarket, handleRemoveLoadData, handleDetailItemMarket, hideDetailItemMarket} from '@Store/Reducer/Market/Market.Action';
+import { Modal, Button } from 'antd';
 
 interface Props {
     
@@ -15,16 +16,22 @@ const ListMarket: React.FC<Props> = () => {
     const refListMarket = useRef();
     const listMarket = useSelector((state: RootState) => state.market);
     const dispatch = useDispatch();
-    const {data, loading, removeLoadData} = listMarket;
-
-
+    const {data, loading, removeLoadData, detailItemMarket} = listMarket;
+    
     const scrollLoadMoreData = () => {
         const documentListCurrent: any = document.getElementById('list_current_market');
-        // console.log((documentListCurrent.clientHeight + documentListCurrent.offsetTop) / (window.scrollY + window.innerHeight))
         const checkScroll: number = (documentListCurrent.clientHeight + documentListCurrent.offsetTop) / (window.scrollY + window.innerHeight);
         if (checkScroll < 1.3) {
             dispatch(fetchMarket());
         }
+    }
+
+    const handleShowItemModal = (item: any) => {
+       dispatch(handleDetailItemMarket(item));
+    }
+
+    const handleHideModal = () => {
+        dispatch(hideDetailItemMarket());
     }
 
     useEffect(() => {
@@ -42,7 +49,17 @@ const ListMarket: React.FC<Props> = () => {
 
     return (
         <div id='list_current_market' className={`list-market row`} ref={refListMarket}>
-            {data.map((item: any, index: number) => <ItemsMarket item={item} key={index}/>)}
+            {data.map((item: any, index: number) => <ItemsMarket item={item} key={index} showItemModal={handleShowItemModal}/>)}
+            <Modal
+                title="Basic Modal"
+                visible={detailItemMarket.showModal}
+                onOk={handleHideModal}
+                onCancel={handleHideModal}
+                >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+            </Modal>
         </div>
     )
 }

@@ -1,16 +1,26 @@
-import React, {useEffect} from 'react';
-import styles from './Posts.module.scss';
+import React, { useEffect } from 'react'
+import styles from './Posts.module.scss'
+import { getAll } from '@Modules/Home/service'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchDataPosts } from '@Store/Reducer/Posts/Posts.Action'
+import ItemsPost from '@Modules/Home/components/ItemsPost'
 
-const {posts}= styles;
+const { posts } = styles
 
-interface Props {
-
-}
+interface Props {}
 
 const PostsContainer: React.FC<Props> = () => {
+  const { listPosts } = useSelector((state: any) => state.PostsReducer)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchDataPosts())
+  }, [])
+
   return (
     <section className={posts}>
-      12355555
+      {listPosts.map((item: any, index: number) => (
+        <ItemsPost itemPost={item} key={index} />
+      ))}
     </section>
   )
 }

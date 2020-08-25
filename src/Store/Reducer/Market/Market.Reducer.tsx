@@ -5,7 +5,9 @@ const {GET_MARKET_BEFORE,
   GET_MARKET_AFTER,
   GET_MARKET_FAILED,
   DELETE_MARKET,
-  REMOVE_LOAD_DATA
+  REMOVE_LOAD_DATA,
+  DETAIL_ITEM_MARKET,
+  UN_DETAIL_ITEM_MARKET
 } = ACTION_MARKET;
 
 interface IInitState{
@@ -13,7 +15,12 @@ interface IInitState{
   numberLoadMarket: number,
   numberPage: number,
   removeLoadData: boolean,
-  data: Array<any>
+  data: Array<any>,
+  detailItemMarket: {
+    showModal: boolean,
+    itemMarket: any | null,
+    loadingDetail: boolean
+  }
 }
 
 export interface IDataMarketDecode{
@@ -28,10 +35,14 @@ export const initStateMarket: IInitState = {
   numberPage: 0,
   removeLoadData: false,
   data: [],
+  detailItemMarket: {
+    showModal: false,
+    itemMarket: null,
+    loadingDetail: false
+  }
 }
 
 export const MarketReducer = (state = initStateMarket, action:any) => {
-  console.log(action);
   switch(action.type) {
     case GET_MARKET_BEFORE:
       return {
@@ -65,6 +76,25 @@ export const MarketReducer = (state = initStateMarket, action:any) => {
         ...state,
         data: state.data.filter(item => action.idDelete !== item.id)
       }
+    case DETAIL_ITEM_MARKET:
+      console.log(action);
+        return {
+          ...state,
+          detailItemMarket: {
+            ...state.detailItemMarket,
+            showModal: true,
+            itemMarket: action.payload
+          }
+        }
+    case UN_DETAIL_ITEM_MARKET:
+        return {
+          ...state,
+          detailItemMarket: {
+            ...state.detailItemMarket,
+            showModal: false,
+            itemMarket: null
+          }
+        }
     default :
       return state
   }

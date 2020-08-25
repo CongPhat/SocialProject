@@ -7,7 +7,9 @@ interface IACTION_MARKET{
   GET_MARKET_BEFORE: string,
   GET_MARKET_AFTER: string,
   DELETE_MARKET: string,
-  REMOVE_LOAD_DATA: string
+  REMOVE_LOAD_DATA: string,
+  DETAIL_ITEM_MARKET: string,
+  UN_DETAIL_ITEM_MARKET: string
 }
 
 export const ACTION_MARKET: IACTION_MARKET = {
@@ -16,7 +18,9 @@ export const ACTION_MARKET: IACTION_MARKET = {
   GET_MARKET_BEFORE: 'GET_MARKET_BEFORE',
   GET_MARKET_AFTER: 'GET_MARKET_AFTER',
   DELETE_MARKET: 'DELETE_MARKET',
-  REMOVE_LOAD_DATA: 'REMOVE_LOAD_DATA'
+  REMOVE_LOAD_DATA: 'REMOVE_LOAD_DATA',
+  DETAIL_ITEM_MARKET: 'DETAIL_ITEM_MARKET',
+  UN_DETAIL_ITEM_MARKET: 'UN_DETAIL_ITEM_MARKET'
 }
 
 export const loading = () => {
@@ -33,6 +37,15 @@ export const getMarketAfter = () => {
 }
 export const handleRemoveLoadData = () => {
     return {type: ACTION_MARKET.REMOVE_LOAD_DATA}
+}
+export const showDetailItemMarket = (dataItem: any) => {
+  return {type: ACTION_MARKET.DETAIL_ITEM_MARKET, payload: dataItem}
+}
+export const handleDetailItemMarket = (dataItem: any) => {
+  return {type: ACTION_MARKET.DETAIL_ITEM_MARKET, payload: dataItem}
+}
+export const hideDetailItemMarket = () => {
+  return {type: ACTION_MARKET.UN_DETAIL_ITEM_MARKET}
 }
 
 export const fetchMarket = () => {
