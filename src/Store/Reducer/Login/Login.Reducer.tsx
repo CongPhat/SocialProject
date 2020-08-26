@@ -42,17 +42,16 @@ export const LoginReducer = (state = initStateLogin, action: any) => {
         ...state,
         loading: !state.loading,
       }
-    // case LOGIN_BEFORE:
-    //   const jwtToken = localStorage.getItem('jwtToken')
-    //   const dataUserDecodeToken: IDataUserDecode = JSON.parse(JSON.stringify(jwt.decode(jwtToken)))
-    //   return {
-    //     ...state,
-    //     privateLogin: true,
-    //     dataUser: {
-    //       name: dataUserDecodeToken.name,
-    //       id: dataUserDecodeToken.iat,
-    //     },
-    //   }
+    case LOGIN_BEFORE:
+      const jwtToken = localStorage.getItem('jwtToken')
+      const dataUserDecodeToken: IDataUserDecode = JSON.parse(JSON.stringify(jwt.decode(jwtToken)))
+      return {
+        ...state,
+        privateLogin: true,
+        dataUser: {
+          email: dataUserDecodeToken.email,
+        },
+      }
     default:
       return state
   }

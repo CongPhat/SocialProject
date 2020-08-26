@@ -1,11 +1,12 @@
-import {getUserApi} from './User.Services';
+import { getUserApi, getDetailUserAPI } from './User.Services'
 
-interface IACTION_USER{
-  GET_USER_SUCCESS: string,
-  GET_USER_FAILED: string,
-  GET_USER_BEFORE: string,
-  GET_USER_AFTER: string,
+interface IACTION_USER {
+  GET_USER_SUCCESS: string
+  GET_USER_FAILED: string
+  GET_USER_BEFORE: string
+  GET_USER_AFTER: string
   DELETE_USER: string
+  SET_DATA_USER: string
 }
 
 export const ACTION_USER: IACTION_USER = {
@@ -14,43 +15,56 @@ export const ACTION_USER: IACTION_USER = {
   GET_USER_BEFORE: 'GET_USER_BEFORE',
   GET_USER_AFTER: 'GET_USER_AFTER',
   DELETE_USER: 'DELETE_USER',
+  SET_DATA_USER: 'SET_DATA_USER',
 }
 
 export const loading = () => {
   return function(dispatch: any) {
-    dispatch({type: ACTION_USER.GET_USER_BEFORE});
+    dispatch({ type: ACTION_USER.GET_USER_BEFORE })
   }
 }
 export const getUserSuccess = (data: any) => {
   return function(dispatch: any) {
-    dispatch({type: ACTION_USER.GET_USER_SUCCESS, data: data});
+    dispatch({ type: ACTION_USER.GET_USER_SUCCESS, data: data })
   }
 }
 export const getUserFailed = () => {
   return function(dispatch: any) {
-    dispatch({type: ACTION_USER.GET_USER_FAILED});
+    dispatch({ type: ACTION_USER.GET_USER_FAILED })
   }
 }
 export const getUserAfter = () => {
   return function(dispatch: any) {
-    dispatch({type: ACTION_USER.GET_USER_AFTER});
+    dispatch({ type: ACTION_USER.GET_USER_AFTER })
   }
 }
 export const fetchUser = () => {
   return async function(dispatch: any) {
-    dispatch(loading());
+    dispatch(loading())
     try {
-      const respon = await getUserApi();
-      dispatch(getUserSuccess(respon.data));
+      const respon = await getUserApi()
+      dispatch(getUserSuccess(respon.data))
     } catch (err) {
-      dispatch(getUserFailed());
+      dispatch(getUserFailed())
     }
-    dispatch(getUserAfter());
+    dispatch(getUserAfter())
+  }
+}
+export const getDetailUser = (idUser: string) => {
+  return async function(dispatch: any) {
+    // dispatch(loading())
+    try {
+      const respon = await getDetailUserAPI(idUser)
+      dispatch({ type: ACTION_USER.SET_DATA_USER, payload: respon.data.data })
+    } catch (err) {
+      // dispatch(getUserFailed())
+    }
+    // dispatch(getUserAfter())
   }
 }
 export const deleteUser = (idUser: any) => {
   return function(dispatch: any) {
-    dispatch({type: ACTION_USER.DELETE_USER, idDelete: idUser});
-    dispatch(fetchUser());
+    dispatch({ type: ACTION_USER.DELETE_USER, idDelete: idUser })
+    dispatch(fetchUser())
   }
 }

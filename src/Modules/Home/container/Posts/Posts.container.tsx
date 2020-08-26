@@ -10,6 +10,8 @@ interface Props {}
 
 const PostsContainer: React.FC<Props> = () => {
   const { listPosts } = useSelector((state: any) => state.PostsReducer)
+  console.log(listPosts);
+  
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchDataPosts())

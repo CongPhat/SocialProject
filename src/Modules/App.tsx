@@ -12,6 +12,8 @@ interface Props {
 }
 
 const App: React.FC<Props> = ({ privateLogin }) => {
+  console.log(privateLogin);
+  
   return (
     <>
       {privateLogin ? (

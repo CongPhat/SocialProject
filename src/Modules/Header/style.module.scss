@@ -1,0 +1,14 @@
+.header {
+  position: fixed;
+  border-bottom: 1px solid #dbdbdb;
+  width: 100%;
+  height: 54px;
+  background: white;
+  z-index: 1000;
+  &Main {
+    width: 33%;
+    margin: auto;
+    position: relative;
+    padding-right: 40px;
+  }
+}

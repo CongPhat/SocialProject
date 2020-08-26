@@ -1,58 +1,49 @@
-import {ACTION_USER} from './User.Action';
-import jwt from 'jsonwebtoken';
+import { ACTION_USER } from './User.Action'
+import jwt from 'jsonwebtoken'
 
-const {GET_USER_BEFORE,
+const {
+  GET_USER_BEFORE,
   GET_USER_SUCCESS,
   GET_USER_AFTER,
   GET_USER_FAILED,
-  DELETE_USER
-} = ACTION_USER;
+  DELETE_USER,
+  SET_DATA_USER,
+} = ACTION_USER
 
-interface IInitState{
+interface IInitState {
   loading: boolean
   data: Array<any>
+  detailUser: {
+    _id: string
+    email: string
+    image: string
+    name: string
+    description: string
+    totalPost: number
+    totalFriend: number
+  } & null
 }
 
-export interface IDataUserDecode{
-  name: string,
-  iat: number,
-  sub: string,
+export interface IDataUserDecode {
+  name: string
+  iat: number
+  sub: string
 }
 
 export const initStateUser: IInitState = {
   loading: false,
-  data: []
+  data: [],
+  detailUser: null,
 }
 
-export const UserReducer = (state = initStateUser, action:any) => {
-  switch(action.type) {
-    case GET_USER_BEFORE:
+export const UserReducer = (state = initStateUser, action: any) => {
+  switch (action.type) {
+    case SET_DATA_USER:
       return {
         ...state,
-        loading: true
+        detailUser: action.payload,
       }
-    case GET_USER_AFTER:
-      console.log('saukhixonghet')
-      return {
-        ...state
-      }
-    case GET_USER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        data: action.data
-      }
-    case GET_USER_FAILED:
-      return {
-        ...state,
-        loading: false
-      }
-    case DELETE_USER:
-      return {
-        ...state,
-        data: state.data.filter(item => action.idDelete !== item.id)
-      }
-    default :
+    default:
       return state
   }
 }

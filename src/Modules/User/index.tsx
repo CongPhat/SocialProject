@@ -1,15 +1,16 @@
-import React from 'react';
-import ViewListUserContainer from './container/ViewListUser/ViewListUser.container';
+import React from 'react'
+import ViewUserContainer from './container/ViewUserContainer'
+import styles from './style.module.scss'
 
-interface Props {
+const { user } = styles
 
-}
+interface Props {}
 
 const User: React.FC<Props> = ({}) => {
   return (
-    <div>
-      <ViewListUserContainer />
-    </div>
+    <section className={`${user}`}>
+      <ViewUserContainer />
+    </section>
   )
 }
 

@@ -1,0 +1,34 @@
+.viewUser {
+  display: flex;
+  &Image {
+    height: 150px;
+    width: 150px;
+    margin-right: 100px;
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+  &Infor {
+    &Top {
+      h6 {
+        font-size: 28px;
+        font-weight: 300;
+        font-family: 'OpenSansCondensed';
+      }
+    }
+    &Center {
+      display: flex;
+      font-size: 15px;
+      &Item {
+        margin-right: 30px;
+        strong {
+          margin-right: 7px;
+        }
+      }
+    }
+    &Bottom {
+    }
+  }
+}

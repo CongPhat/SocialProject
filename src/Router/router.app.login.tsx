@@ -1,48 +1,48 @@
-import React from 'react';
-import Loadable from 'react-loadable';
-import {LoadingPage} from '@Common/LoadingPage';
+import React from 'react'
+import Loadable from 'react-loadable'
+import { LoadingPage } from '@Common/LoadingPage'
 
 const Home = Loadable({
   loader: () => import('@Modules/Home'),
-  loading: LoadingPage
+  loading: LoadingPage,
 })
 const ToDoList = Loadable({
   loader: () => import('@Modules/ToDoList'),
-  loading: LoadingPage
+  loading: LoadingPage,
 })
 const User = Loadable({
   loader: () => import('@Modules/User'),
-  loading: LoadingPage
+  loading: LoadingPage,
 })
 const Market = Loadable({
   loader: () => import('@Modules/Market/market'),
-  loading: LoadingPage
+  loading: LoadingPage,
 })
 
 export const routerAppLogin: Object[] = [
   {
     path: '/',
     exact: true,
-    main: ({match, location, history}: any) => <Home  />
+    main: ({ match, location, history }: any) => <Home />,
   },
   {
     path: '/todolist',
     exact: true,
-    main: ({match, location, history}: any) => <ToDoList  />
+    main: ({ match, location, history }: any) => <ToDoList />,
   },
   {
-    path: '/user',
+    path: '/user/:id',
     exact: true,
-    main: ({match, location, history}: any) => <User  />
+    main: ({ match, location, history }: any) => <User />,
   },
   {
     path: '/market',
     exact: true,
-    main: ({match, location, history}: any) => <Market  />
+    main: ({ match, location, history }: any) => <Market />,
   },
   {
     path: '',
     exact: true,
-    main: () => <div>404</div>
+    main: () => <div>404</div>,
   },
 ]

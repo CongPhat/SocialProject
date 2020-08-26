@@ -2,6 +2,7 @@ import { ToDoListReducer } from './ToDoList/ToDoList.Reducer'
 import { LoginReducer } from './Login/Login.Reducer'
 import { UserReducer } from './User/User.Reducer'
 import { MarketReducer } from './Market/Market.Reducer'
+import { HeaderReducer } from './Header/Header.Reducer'
 import { combineReducers } from 'redux'
 import { PostsReducer } from './Posts/Posts.Reducer'
 
@@ -11,4 +12,5 @@ export const RootReducer = combineReducers({
   user: UserReducer,
   market: MarketReducer,
   PostsReducer,
+  HeaderReducer,
 })

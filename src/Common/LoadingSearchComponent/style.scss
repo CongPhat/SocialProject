@@ -1,0 +1,18 @@
+.donut {
+  width: 14px;
+  height: 12px;
+  /* margin: 2rem; */
+  border-radius: 50%;
+  border: 2px solid rgba(151, 159, 208, 0.3);
+  border-top-color: gray;
+  animation: 1.5s spin infinite linear;
+  &.multi {
+    border-bottom-color: gray;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

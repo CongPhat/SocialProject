@@ -10,8 +10,24 @@
   src: url('../assets/fonts/Segoe-UI-Bold.ttf');
 }
 
+@font-face {
+  font-family: 'OpenSansCondensed';
+  src: url('../assets/fonts/OpenSansCondensed-Light.ttf');
+}
+@font-face {
+  font-family: 'OpenSansCondensed-Bold';
+  src: url('../assets/fonts/OpenSansCondensed-Bold.ttf');
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../assets/fonts/RobotoMono-Regular.ttf');
+}
+@font-face {
+  font-family: 'OpenSansCondensed-Bold';
+  src: url('../assets/fonts/OpenSansCondensed-Bold.ttf');
+}
 body {
-  font-family: 'Segoe UI' !important;
+  font-family: 'Roboto' !important;
   color: black;
 }
 
@@ -64,6 +80,11 @@ body {
     background: $bg-purple !important;
     color: $white !important;
   }
+}
+.ant-input-focused,
+.ant-input:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 /*-----------------------------Custom Bootstrap-----------------------------*/
