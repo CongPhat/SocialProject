@@ -3,9 +3,14 @@
 interface CssExports {
   'viewUser': string;
   'viewUserImage': string;
+  'viewUserInforBottom': string;
   'viewUserInforCenter': string;
   'viewUserInforCenterItem': string;
   'viewUserInforTop': string;
+  'viewUserModalButton': string;
+  'viewUserModalButtonConfig': string;
+  'viewUserModalButtonConfigRed': string;
+  'viewUserModalMain': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

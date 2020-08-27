@@ -1,6 +1,13 @@
 import React, { useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { getDetailUser, deleteUser } from '@Store/Reducer/User/User.Action'
+import {
+  getDetailUser,
+  deleteUser,
+  addFriend,
+  addFriendSuccess,
+  closeFriend,
+  actionModalFriend,
+} from '@Store/Reducer/User/User.Action'
 import ListUserComponent from '@Modules/User/component/ItemUser/index'
 import { useHistory, useParams } from 'react-router-dom'
 import ViewUserComponent from '@Modules/User/component/ViewUserComponent'
@@ -17,10 +24,27 @@ const ViewUserContainer: React.FC<Props> = ({}) => {
   useEffect(() => {
     dispatch(getDetailUser(id))
   }, [id])
+  const handleAddFriend = (idFriend: string) => {
+    dispatch(addFriend(idFriend))
+  }
+  const handleCloseFriend = (idFriend: string) => {
+    dispatch(closeFriend(idFriend))
+  }
+  const handleModalFriend = () => {
+    dispatch(actionModalFriend())
+  }
+  const handleAddFriendSuccess = (idFriend: string) => {
+    dispatch(addFriendSuccess(idFriend))
+  }
 
   return (
     <>
-      <ViewUserComponent />
+      <ViewUserComponent
+        addFriend={handleAddFriend}
+        closeFriend={handleCloseFriend}
+        modalFriend={handleModalFriend}
+        addFriendSuccess={handleAddFriendSuccess}
+      />
     </>
   )
 }
