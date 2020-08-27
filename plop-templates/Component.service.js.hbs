@@ -1,0 +1,19 @@
+export const paramsGet{{pascalCase name}} = () => {
+return {
+endpoint: `/endpoint`,
+method: "GET",
+};
+};
+export const paramsPost{{pascalCase name}} = (data: any) => {
+return {
+endpoint: `/endpoint`,
+method: "POST",
+body: data,
+convertRes: (res: any) => {
+return {
+data: res.data.data,
+totalRecord: res.data.info.totalRecord,
+};
+},
+};
+};

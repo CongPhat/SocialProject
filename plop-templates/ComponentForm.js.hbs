@@ -1,0 +1,37 @@
+import React from 'react';
+import './{{pascalCase name}}.scss';
+import { I{{pascalCase name}} } from './{{pascalCase name}}.Interface'
+import {Form, Select, Input, Button} from 'antd';
+interface Iprops {
+
+}
+
+const {{pascalCase name}} = (props:Iprops) => {
+const onFinish = (values: any) => {
+console.log('Success:', values);
+};
+return (
+<div className={`{{pascalCase name}}`}>
+    <Form name={`{{pascalCase name}}`} onFinish={onFinish}>
+        <Form.Item label={`{{pascalCase name}}Input`} name={`{{pascalCase name}}Input`} rules={[{ required: true,
+            message: 'Message' }]}>
+            <Input />
+        </Form.Item>
+
+        <Form.Item label={`{{pascalCase name}}Select`}>
+            <Select>
+                <Select.Option value="demo">Demo</Select.Option>
+            </Select>
+        </Form.Item>
+
+        <Form.Item>
+            <Button type="primary" htmlType="submit">
+                Submit
+            </Button>
+        </Form.Item>
+    </Form>
+</div>
+);
+};
+
+export default {{pascalCase name}};

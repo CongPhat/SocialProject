@@ -8,7 +8,7 @@ function DefaultLogin(Component: React.ComponentType<any | string>) {
       <>
         <Header />
         <div className="pt-5" />
-        <div className="pt-5">
+        <div className="pt-5" style={{ background: '#fafafa' }}>
           <Component />
         </div>
       </>

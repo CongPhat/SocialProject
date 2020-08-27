@@ -7,6 +7,8 @@ const {
   GET_USER_AFTER,
   GET_USER_FAILED,
   DELETE_USER,
+  LOADING_BTN,
+  MODAL_FRIEND,
   SET_DATA_USER,
 } = ACTION_USER
 
@@ -22,6 +24,8 @@ interface IInitState {
     totalPost: number
     totalFriend: number
   } & null
+  loadingBtn: boolean
+  showModalFriend: boolean
 }
 
 export interface IDataUserDecode {
@@ -34,6 +38,8 @@ export const initStateUser: IInitState = {
   loading: false,
   data: [],
   detailUser: null,
+  loadingBtn: false,
+  showModalFriend: false,
 }
 
 export const UserReducer = (state = initStateUser, action: any) => {
@@ -42,6 +48,18 @@ export const UserReducer = (state = initStateUser, action: any) => {
       return {
         ...state,
         detailUser: action.payload,
+        loadingBtn: false,
+        showModalFriend: false,
+      }
+    case LOADING_BTN:
+      return {
+        ...state,
+        loadingBtn: !state.loadingBtn,
+      }
+    case MODAL_FRIEND:
+      return {
+        ...state,
+        showModalFriend: !state.showModalFriend,
       }
     default:
       return state
