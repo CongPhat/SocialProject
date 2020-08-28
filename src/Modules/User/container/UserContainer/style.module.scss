@@ -1,0 +1,13 @@
+.StyleUserContainer {
+  margin-top: 100px;
+  border-top: 1px solid black;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  position: relative;
+  &Loading {
+    position: absolute;
+    opacity: 0;
+    bottom: 0;
+    width: 100%;
+  }
+}

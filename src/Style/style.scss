@@ -93,6 +93,9 @@ body {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
+.opacity-100 {
+  opacity: 1 !important;
+}
 
 /*-----------------------------Custom Bootstrap-----------------------------*/
 .row {
@@ -105,4 +108,15 @@ body {
 }
 .ant-modal-content {
   border-radius: 22px !important;
+  overflow: hidden !important;
+  background: white !important;
+}
+
+//modal post user
+.modal-post-user {
+  width: 42% !important;
+  // background: white !important;
+  .ant-modal-content {
+    min-height: 600px !important;
+  }
 }

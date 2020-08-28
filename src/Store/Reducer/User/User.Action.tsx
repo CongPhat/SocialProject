@@ -1,10 +1,13 @@
 import {
   getUserApi,
   getDetailUserAPI,
+  getListPostUserAPI,
   addFriendAPI,
   closeFriendAPI,
   addFriendSuccessAPI,
+  getPostUserAPI,
 } from './User.Services'
+import { debounce } from 'lodash'
 
 interface IACTION_USER {
   GET_USER_SUCCESS: string
@@ -15,6 +18,12 @@ interface IACTION_USER {
   SET_DATA_USER: string
   LOADING_BTN: string
   MODAL_FRIEND: string
+  SET_DATA_LIST_POST: string
+  SET_DATA_LIST_POST_INIT: string
+  LOADING_POST: string
+  SHOW_MODAL_POST_USER: string
+  SET_DATA_POST_USER: string
+  SET_DATA_POST_USER_MEMO: string
 }
 
 export const ACTION_USER: IACTION_USER = {
@@ -26,6 +35,12 @@ export const ACTION_USER: IACTION_USER = {
   SET_DATA_USER: 'SET_DATA_USER',
   LOADING_BTN: 'LOADING_BTN',
   MODAL_FRIEND: 'MODAL_FRIEND',
+  SET_DATA_LIST_POST: 'SET_DATA_LIST_POST',
+  SET_DATA_LIST_POST_INIT: 'SET_DATA_LIST_POST_INIT',
+  LOADING_POST: 'LOADING_POST',
+  SHOW_MODAL_POST_USER: 'SHOW_MODAL_POST_USER',
+  SET_DATA_POST_USER: 'SET_DATA_POST_USER',
+  SET_DATA_POST_USER_MEMO: 'SET_DATA_POST_USER_MEMO',
 }
 
 export const loading = () => {
@@ -72,6 +87,58 @@ export const getDetailUser = (idUser: string) => {
     // dispatch(getUserAfter())
   }
 }
+export const getListPostUserInit = (idUser: string) => {
+  return async function(dispatch: any, getState: any) {
+    const respon = await getListPostUserAPI(idUser, 0)
+    dispatch({ type: ACTION_USER.SET_DATA_LIST_POST_INIT, payload: respon.data.data })
+    try {
+    } catch (err) {
+      // dispatch(getUserFailed())
+    }
+    // dispatch(getUserAfter())
+  }
+}
+export const getListPostUser = (idUser: string) => {
+  return async function(dispatch: any, getState: any) {
+    dispatch({ type: ACTION_USER.LOADING_POST })
+    const { user } = getState()
+    const { page } = user
+    const respon = await getListPostUserAPI(idUser, page)
+    dispatch({ type: ACTION_USER.SET_DATA_LIST_POST, payload: respon.data.data })
+    try {
+    } catch (err) {
+      // dispatch(getUserFailed())
+    }
+    // dispatch(getUserAfter())
+  }
+}
+export const closeModalPostUser = () => {
+  return async function(dispatch: any, getState: any) {
+    dispatch({ type: ACTION_USER.SHOW_MODAL_POST_USER })
+  }
+}
+export const showModalPostUser = (idPost: string) => {
+  return async function(dispatch: any, getState: any) {
+    dispatch({ type: ACTION_USER.SHOW_MODAL_POST_USER })
+    const {
+      user: {
+        postUser: { dataMemoPostUser },
+      },
+    } = getState()
+    const dataFind = dataMemoPostUser.find((item: any) => item._id === idPost)
+    if (dataFind) {
+      dispatch({ type: ACTION_USER.SET_DATA_POST_USER_MEMO, payload: dataFind })
+    } else {
+      const respon = await getPostUserAPI(idPost)
+      dispatch({ type: ACTION_USER.SET_DATA_POST_USER, payload: respon.data.data })
+    }
+    try {
+    } catch (err) {
+      // dispatch(getUserFailed())
+    }
+    // dispatch(getUserAfter())
+  }
+}
 export const addFriend = (idFriend: string) => {
   return async function(dispatch: any) {
     dispatch({ type: ACTION_USER.LOADING_BTN })
@@ -89,7 +156,6 @@ export const addFriendSuccess = (idFriend: string) => {
     dispatch({ type: ACTION_USER.LOADING_BTN })
     try {
       const respon = await addFriendSuccessAPI(idFriend)
-      console.log(respon)
       dispatch(getDetailUser(idFriend))
     } catch (err) {
       // dispatch(getUserFailed())

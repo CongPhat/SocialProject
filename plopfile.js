@@ -40,12 +40,12 @@ module.exports = plop => {
       const actions = [
         {
           type: 'add',
-          path: Path + '/{{pascalCase name}}/{{pascalCase name}}.tsx',
+          path: Path + '/{{pascalCase name}}/index.tsx',
           templateFile: componentTemplate,
         },
         {
           type: 'add',
-          path: Path + '/{{pascalCase name}}/{{pascalCase name}}.scss',
+          path: Path + '/{{pascalCase name}}/style.module.scss',
           templateFile: 'plop-templates/Component.scss.hbs',
         },
         {
@@ -53,11 +53,11 @@ module.exports = plop => {
           path: Path + '/{{pascalCase name}}/{{pascalCase name}}.Interface.tsx',
           templateFile: 'plop-templates/Component.interface.js.hbs',
         },
-        {
-          type: 'add',
-          path: Path + '/{{pascalCase name}}/{{pascalCase name}}.Service.tsx',
-          templateFile: 'plop-templates/Component.service.js.hbs',
-        },
+        // {
+        //   type: 'add',
+        //   path: Path + '/{{pascalCase name}}/{{pascalCase name}}.Service.tsx',
+        //   templateFile: 'plop-templates/Component.service.js.hbs',
+        // },
       ]
       return actions
     },

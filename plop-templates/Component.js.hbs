@@ -1,13 +1,15 @@
 import React from 'react';
-import './{{pascalCase name}}.scss';
+{{!-- import styles from './{{pascalCase name}}.module.scss'; --}}
+import styles from './style.module.scss';
 import { I{{pascalCase name}} } from './{{pascalCase name}}.Interface'
+const { Style{{pascalCase name}} } = styles;
 interface Iprops {
 
 }
 
 const {{pascalCase name}} = (props:Iprops) => {
 return (
-<div className={`{{pascalCase name}}`}>
+<div className={`${ Style{{pascalCase name}} }`}>
     {{pascalCase name}}
 </div>
 );

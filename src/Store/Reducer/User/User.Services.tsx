@@ -7,6 +7,12 @@ export const getUserApi = () => {
 export const getDetailUserAPI = (idUser: string) => {
   return callApiAxios(`/user/${idUser}`, 'GET')
 }
+export const getListPostUserAPI = (idUser: string, page: number) => {
+  return callApiAxios(`/user/posts/${idUser}/${page}`, 'GET')
+}
+export const getPostUserAPI = (idPost: string) => {
+  return callApiAxios(`/user/post-user/${idPost}/`, 'GET')
+}
 export const addFriendAPI = (idFriend: string) => {
   return callApiAxios(`/user/friend/${idFriend}`, 'GET')
 }

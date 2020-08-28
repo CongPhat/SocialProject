@@ -1,5 +1,6 @@
 import { ACTION_LOGIN } from './Login.Action'
 import jwt from 'jsonwebtoken'
+import Axios from 'axios'
 
 const { LOGIN, LOGIN_BEFORE, LOADING } = ACTION_LOGIN
 
@@ -30,6 +31,7 @@ export const LoginReducer = (state = initStateLogin, action: any) => {
     case LOGIN:
       const dataUserDecode: IDataUserDecode = JSON.parse(JSON.stringify(jwt.decode(action.payload)))
       localStorage.setItem('jwtToken', action.payload)
+      Axios.defaults.headers.common['Authorization'] = action.payload
       return {
         ...state,
         privateLogin: true,
