@@ -57,6 +57,7 @@
     "copy-webpack-plugin": "^5.1.1",
     "css-modules-typescript-loader": "^4.0.0",
     "customize-cra": "^1.0.0",
+    "dateformat": "^3.0.3",
     "hookrouter": "^1.2.3",
     "jsonwebtoken": "^8.5.1",
     "react": "^16.12.0",

@@ -120,3 +120,24 @@ body {
     min-height: 600px !important;
   }
 }
+
+textarea {
+  resize: none;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
+
+button {
+  border: none;
+  background: none;
+  font-weight: 600;
+  color: var(--blue1);
+  &:focus {
+    outline: none;
+  }
+  &:disabled {
+    opacity: 0.6;
+  }
+}

@@ -6,6 +6,8 @@ import {
   closeFriendAPI,
   addFriendSuccessAPI,
   getPostUserAPI,
+  addCommentAPI,
+  getListCommentAPI,
 } from './User.Services'
 import { debounce } from 'lodash'
 
@@ -24,6 +26,12 @@ interface IACTION_USER {
   SHOW_MODAL_POST_USER: string
   SET_DATA_POST_USER: string
   SET_DATA_POST_USER_MEMO: string
+  ADD_COMMENT: string
+  SET_DATA_LIST_COMMENT: string
+  SUCCESS_COMMENT: string
+  LOAD_ADD_COMMENT: string
+  REPLY_COMMENT: string
+  NO_REPLY_COMMENT: string
 }
 
 export const ACTION_USER: IACTION_USER = {
@@ -41,6 +49,12 @@ export const ACTION_USER: IACTION_USER = {
   SHOW_MODAL_POST_USER: 'SHOW_MODAL_POST_USER',
   SET_DATA_POST_USER: 'SET_DATA_POST_USER',
   SET_DATA_POST_USER_MEMO: 'SET_DATA_POST_USER_MEMO',
+  ADD_COMMENT: 'ADD_COMMENT',
+  SET_DATA_LIST_COMMENT: 'SET_DATA_LIST_COMMENT',
+  SUCCESS_COMMENT: 'SUCCESS_COMMENT',
+  LOAD_ADD_COMMENT: 'LOAD_ADD_COMMENT',
+  REPLY_COMMENT: 'REPLY_COMMENT',
+  NO_REPLY_COMMENT: 'NO_REPLY_COMMENT',
 }
 
 export const loading = () => {
@@ -132,6 +146,7 @@ export const showModalPostUser = (idPost: string) => {
       const respon = await getPostUserAPI(idPost)
       dispatch({ type: ACTION_USER.SET_DATA_POST_USER, payload: respon.data.data })
     }
+
     try {
     } catch (err) {
       // dispatch(getUserFailed())
@@ -178,6 +193,39 @@ export const closeFriend = (idFriend: string) => {
 export const actionModalFriend = () => {
   return async function(dispatch: any) {
     dispatch({ type: ACTION_USER.MODAL_FRIEND })
+  }
+}
+export const addComment = (data: string) => {
+  return async function(dispatch: any, getState: any) {
+    dispatch({ type: ACTION_USER.LOAD_ADD_COMMENT })
+    const {
+      user: {
+        postUser: { postUser },
+        commentReply,
+      },
+    } = getState()
+    try {
+      const request = {
+        id: postUser._id,
+        comment: data,
+        idParentComment: commentReply ? commentReply._id : undefined,
+      }
+      const respon = await addCommentAPI(request)
+      dispatch({ type: ACTION_USER.SUCCESS_COMMENT, payload: respon.data.data })
+    } catch (err) {
+      // dispatch(getUserFailed())
+    }
+    // dispatch({ type: ACTION_USER.ADD_COMMENT, payload: data })
+  }
+}
+export const commentReply = (itemComment: any) => {
+  return async function(dispatch: any, getState: any) {
+    dispatch({ type: ACTION_USER.REPLY_COMMENT, payload: itemComment })
+  }
+}
+export const noCommentReply = () => {
+  return async function(dispatch: any, getState: any) {
+    dispatch({ type: ACTION_USER.NO_REPLY_COMMENT })
   }
 }
 export const deleteUser = (idUser: any) => {

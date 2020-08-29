@@ -16,6 +16,11 @@ const {
   SHOW_MODAL_POST_USER,
   SET_DATA_POST_USER,
   SET_DATA_POST_USER_MEMO,
+  SET_DATA_LIST_COMMENT,
+  SUCCESS_COMMENT,
+  LOAD_ADD_COMMENT,
+  REPLY_COMMENT,
+  NO_REPLY_COMMENT,
 } = ACTION_USER
 
 interface IInitState {
@@ -40,7 +45,10 @@ interface IInitState {
     showModal: boolean
     dataMemoPostUser: Array<any>
     postUser: any
+    listComment: Array<any>
   }
+  loadAddComment: boolean
+  commentReply: any
 }
 
 export interface IDataUserDecode {
@@ -63,7 +71,10 @@ export const initStateUser: IInitState = {
     showModal: false,
     dataMemoPostUser: [],
     postUser: null,
+    listComment: [],
   },
+  loadAddComment: false,
+  commentReply: null,
 }
 
 export const UserReducer = (state = initStateUser, action: any) => {
@@ -112,6 +123,7 @@ export const UserReducer = (state = initStateUser, action: any) => {
           ...state.postUser,
           showModal: !state.postUser.showModal,
           postUser: null,
+          listComment: [],
         },
       }
     case SET_DATA_POST_USER:
@@ -123,6 +135,14 @@ export const UserReducer = (state = initStateUser, action: any) => {
           postUser: action.payload,
         },
       }
+    case SET_DATA_LIST_COMMENT:
+      return {
+        ...state,
+        postUser: {
+          ...state.postUser,
+          listComment: action.payload,
+        },
+      }
     case SET_DATA_POST_USER_MEMO:
       return {
         ...state,
@@ -131,6 +151,79 @@ export const UserReducer = (state = initStateUser, action: any) => {
           postUser: action.payload,
         },
       }
+    case LOAD_ADD_COMMENT:
+      return {
+        ...state,
+        loadAddComment: true,
+      }
+    case REPLY_COMMENT:
+      return {
+        ...state,
+        commentReply: action.payload,
+      }
+    case NO_REPLY_COMMENT:
+      return {
+        ...state,
+        commentReply: null,
+      }
+    case SUCCESS_COMMENT:
+      const { payload: dataComment } = action
+      const { dataMemoPostUser, postUser } = state.postUser
+
+      let dataMemoPushComment, postUserPushComment
+
+      if (dataComment.idCommentParrent !== '') {
+        dataMemoPushComment = dataMemoPostUser.map(item => {
+          if (item._id === dataComment.postId) {
+            const commentChild = item.comments.map((itemComment: any) => {
+              if (itemComment._id === dataComment.idCommentParrent) {
+                return {
+                  ...itemComment,
+                  childs: [...itemComment.childs, dataComment],
+                }
+              }
+              return itemComment
+            })
+          }
+          return item
+        })
+        postUserPushComment = {
+          ...postUser,
+          comments: postUser.comments.map((itemPostUser: any) => {
+            if (itemPostUser._id === dataComment.idCommentParrent) {
+              return {
+                ...itemPostUser,
+                childs: [...itemPostUser.childs, dataComment],
+              }
+            }
+            return itemPostUser
+          }),
+        }
+      } else {
+        dataMemoPushComment = dataMemoPostUser.map(item => {
+          if (item._id === dataComment.postId) {
+            return {
+              ...item,
+              comments: [...item.comments, dataComment],
+            }
+          }
+          return item
+        })
+        postUserPushComment = {
+          ...postUser,
+          comments: [...postUser.comments, dataComment],
+        }
+      }
+      return {
+        ...state,
+        postUser: {
+          ...state.postUser,
+          dataMemoPostUser: dataMemoPushComment,
+          postUser: postUserPushComment,
+        },
+        loadAddComment: false,
+      }
+
     default:
       return state
   }

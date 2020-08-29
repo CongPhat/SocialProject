@@ -13,6 +13,12 @@ export const getListPostUserAPI = (idUser: string, page: number) => {
 export const getPostUserAPI = (idPost: string) => {
   return callApiAxios(`/user/post-user/${idPost}/`, 'GET')
 }
+export const getListCommentAPI = (idPost: string) => {
+  return callApiAxios(`/comment/${idPost}/`, 'GET')
+}
+export const addCommentAPI = (data: any) => {
+  return callApiAxios(`/comment`, 'POST', data)
+}
 export const addFriendAPI = (idFriend: string) => {
   return callApiAxios(`/user/friend/${idFriend}`, 'GET')
 }

@@ -7,6 +7,8 @@ interface CssExports {
   'ItemContentMain': string;
   'ItemImage': string;
   'ItemsComment': string;
+  'ItemsCommentAction': string;
+  'ItemsCommentChild': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
