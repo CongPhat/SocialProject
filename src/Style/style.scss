@@ -141,3 +141,27 @@ button {
     opacity: 0.6;
   }
 }
+
+//collapse reply
+.view-comment-reply {
+  border: none !important;
+  background: none !important;
+  .ant-collapse-header {
+    padding: 12px 16px 12px 21px !important;
+    color: #8e8e8e !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    .ant-collapse-arrow {
+      left: 2px !important;
+    }
+  }
+  .ant-collapse-item {
+    border: none !important;
+    .ant-collapse-content {
+      border: none !important;
+      &-box {
+        padding: 14px 0 !important;
+      }
+    }
+  }
+}

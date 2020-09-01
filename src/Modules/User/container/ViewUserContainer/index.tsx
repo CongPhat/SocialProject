@@ -11,6 +11,7 @@ import {
 import ListUserComponent from '@Modules/User/component/ItemUser/index'
 import { useHistory, useParams } from 'react-router-dom'
 import ViewUserComponent from '@Modules/User/component/ViewUserComponent'
+import { AddUserChat } from '@Store/Reducer/Chats/Chats.Action'
 
 interface Props {}
 
@@ -36,6 +37,9 @@ const ViewUserContainer: React.FC<Props> = ({}) => {
   const handleAddFriendSuccess = (idFriend: string) => {
     dispatch(addFriendSuccess(idFriend))
   }
+  const handleShowMessage = useCallback((item: any) => {
+    dispatch(AddUserChat(item))
+  }, [])
 
   return (
     <>
@@ -44,6 +48,7 @@ const ViewUserContainer: React.FC<Props> = ({}) => {
         closeFriend={handleCloseFriend}
         modalFriend={handleModalFriend}
         addFriendSuccess={handleAddFriendSuccess}
+        showMessage={handleShowMessage}
       />
     </>
   )

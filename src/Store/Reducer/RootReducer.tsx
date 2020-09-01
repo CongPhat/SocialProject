@@ -5,6 +5,7 @@ import { MarketReducer } from './Market/Market.Reducer'
 import { HeaderReducer } from './Header/Header.Reducer'
 import { combineReducers } from 'redux'
 import { PostsReducer } from './Posts/Posts.Reducer'
+import { ChatsRuducer } from './Chats/Chats.Reducer'
 
 export const RootReducer = combineReducers({
   toDoList: ToDoListReducer,
@@ -13,4 +14,5 @@ export const RootReducer = combineReducers({
   market: MarketReducer,
   PostsReducer,
   HeaderReducer,
+  ChatsRuducer,
 })

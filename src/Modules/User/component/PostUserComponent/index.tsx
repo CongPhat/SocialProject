@@ -24,7 +24,7 @@ const PostUserComponent = (props: Iprops) => {
           </div>
           <div className="d-flex align-items-center ml-4">
             <i className="fa fa-comment" aria-hidden="true"></i>
-            <strong>{props.postItem.like}</strong>
+            <strong>{props.postItem.totalComment}</strong>
           </div>
         </div>
       </div>

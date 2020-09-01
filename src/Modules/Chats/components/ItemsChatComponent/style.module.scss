@@ -1,0 +1,73 @@
+.Item {
+  width: 350px;
+  height: 100%;
+  margin: 0 20px;
+  box-shadow: 0 12px 28px 0 #828488, 0 2px 4px 0 #e4e6eb;
+  background: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  &Header {
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px -2px grey;
+    &User {
+      display: flex;
+      align-items: center;
+      img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        margin-right: 15px;
+      }
+      h6 {
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+    i {
+      cursor: pointer;
+      font-size: 25px;
+    }
+  }
+  &Content {
+    height: 380px;
+    padding: 15px;
+    &Record {
+      display: flex;
+      margin-bottom: 6px;
+      width: 70%;
+      align-items: flex-end;
+      &Image {
+        width: 30px;
+        height: 30px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: fill;
+          border-radius: 50%;
+        }
+      }
+      span {
+        display: block;
+        background: #e6e6e6;
+        border-radius: 16px;
+        padding: 7px 15px;
+        margin: 0 10px;
+      }
+      &Group {
+        margin-bottom: 5px;
+      }
+      &Reverd {
+        margin-left: auto;
+        flex-direction: row-reverse;
+        justify-content: end;
+        span {
+          background-color: rgb(250, 60, 76);
+          color: white;
+        }
+      }
+    }
+  }
+}

@@ -24,6 +24,7 @@ interface Props {
   closeFriend: (id: string) => void
   modalFriend: () => void
   addFriendSuccess: (id: string) => void
+  showMessage: (item: any) => void
 }
 
 interface RootState {
@@ -48,6 +49,9 @@ const ViewUserComponent: React.FC<Props> = props => {
   const handleClickModal = useCallback(() => {
     props.modalFriend()
   }, [detailUser])
+  const handleClickMessage = useCallback(() => {
+    props.showMessage(detailUser)
+  }, [detailUser])
   return (
     <>
       {detailUser && (
@@ -67,7 +71,10 @@ const ViewUserComponent: React.FC<Props> = props => {
                 />
               )}
               {detailUser.isFriend && detailUser.isFriend.status === 1 && (
-                <ButtonComponent text="Bạn bè" onClick={handleClickModal} />
+                <>
+                  <ButtonComponent text="Bạn bè" onClick={handleClickModal} />
+                  <ButtonComponent text="Tin nhắn" onClick={handleClickMessage} />
+                </>
               )}
               {detailUser.isFriend && detailUser.isFriend.status === 0 && (
                 <ButtonComponent

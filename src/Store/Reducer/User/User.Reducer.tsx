@@ -222,6 +222,7 @@ export const UserReducer = (state = initStateUser, action: any) => {
           postUser: postUserPushComment,
         },
         loadAddComment: false,
+        commentReply: null,
       }
 
     default:
