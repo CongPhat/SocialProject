@@ -36,6 +36,11 @@ body {
   --grayText: #262626;
   --red: #ed4956;
   --gray: #dbdbdb;
+  --comment-button: #f0f2f5;
+  --comment-button-hover: #e6e6e6;
+  --secondary-text: #65676b;
+  --divider: #ced0d4;
+  --media-inner-border: rgba(0, 0, 0, 0.1);
 }
 
 /*---------------------------------Custom Antd--------------------------------*/
@@ -122,10 +127,10 @@ body {
 }
 
 textarea {
-  resize: none;
-  border: none;
+  resize: none !important;
+  border: none !important;
   &:focus {
-    outline: none;
+    outline: none !important;
   }
 }
 
@@ -163,5 +168,19 @@ button {
         padding: 14px 0 !important;
       }
     }
+  }
+}
+
+.form-new-post {
+  textarea.ant-input {
+    min-height: 100px;
+    max-height: 200px;
+    padding: 0 !important;
+    background: none !important;
+    font-size: 15px !important;
+  }
+  .ant-btn {
+    width: 100% !important;
+    border-radius: 10px !important;
   }
 }

@@ -21,6 +21,8 @@ interface Iprops {
     image: string
     userId: string
     user: any
+    like: number
+    comments: Array<any>
   }
 }
 
@@ -42,21 +44,25 @@ const ItemsPost = ({ itemPost }: Iprops) => {
             <i className="fa fa-comment-o" aria-hidden="true" onClick={handleActiveTag}></i>
           </div>
           <div className={`${itemPostElementSocialLike}`}>
-            <p>33 likes</p>
+            {itemPost.like > 0 && <p>{itemPost.like} likes</p>}
           </div>
           <div className={`${itemPostElementSocialContent}`}>
             <span>{itemPost.user.name}</span>
             <span>{itemPost.content}</span>
           </div>
-          <p className={`${itemPostElementSocialViewAll}`}>View all 115 comments</p>
-          <div className={`${itemPostElementSocialContent}`}>
-            <span>{itemPost.user.name}</span>
-            <span>{itemPost.content}</span>
-          </div>
-          <div className={`${itemPostElementSocialContent}`}>
-            <span>{itemPost.user.name}</span>
-            <span>{itemPost.content}</span>
-          </div>
+          {itemPost.comments.length > 0 && (
+            <>
+              <p className={`${itemPostElementSocialViewAll}`}>
+                View all {itemPost.comments.length} comments
+              </p>
+              <div className={`${itemPostElementSocialContent}`}>
+                <Link to={`/user/${itemPost.comments[itemPost.comments.length - 1].user._id}`}>
+                  {itemPost.comments[itemPost.comments.length - 1].user.name}
+                </Link>
+                <span>{itemPost.comments[itemPost.comments.length - 1].content}</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

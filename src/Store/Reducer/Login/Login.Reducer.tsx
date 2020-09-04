@@ -2,12 +2,15 @@ import { ACTION_LOGIN } from './Login.Action'
 import jwt from 'jsonwebtoken'
 import Axios from 'axios'
 
-const { LOGIN, LOGIN_BEFORE, LOADING } = ACTION_LOGIN
+const { LOGIN, LOGIN_BEFORE, LOADING, LOG_OUT } = ACTION_LOGIN
 
 interface IInitState {
   privateLogin: boolean
   dataUser: {
     email: string
+    image: string
+    name: string
+    id: string
   }
   loading: boolean
 }
@@ -15,13 +18,19 @@ interface IInitState {
 export interface IDataUserDecode {
   email: string
   iat: number
+  image: string
+  name: string
   sub: string
+  id: string
 }
 
 export const initStateLogin: IInitState = {
   privateLogin: false,
   dataUser: {
     email: '',
+    image: '',
+    name: 'name',
+    id: '',
   },
   loading: false,
 }
@@ -37,6 +46,9 @@ export const LoginReducer = (state = initStateLogin, action: any) => {
         privateLogin: true,
         dataUser: {
           email: dataUserDecode.email,
+          image: dataUserDecode.image,
+          name: dataUserDecode.name,
+          id: dataUserDecode.id,
         },
       }
     case LOADING:
@@ -52,6 +64,21 @@ export const LoginReducer = (state = initStateLogin, action: any) => {
         privateLogin: true,
         dataUser: {
           email: dataUserDecodeToken.email,
+          image: dataUserDecodeToken.image,
+          name: dataUserDecodeToken.name,
+          id: dataUserDecodeToken.id,
+        },
+      }
+    case LOG_OUT:
+      localStorage.removeItem('jwtToken')
+      return {
+        ...state,
+        privateLogin: false,
+        dataUser: {
+          email: '',
+          image: '',
+          name: '',
+          id: '',
         },
       }
     default:

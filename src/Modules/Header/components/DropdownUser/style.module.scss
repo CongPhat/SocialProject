@@ -1,7 +1,7 @@
 .dropdown {
   position: absolute;
-  right: 0;
-  top: 43px;
+  right: -100%;
+  top: 40px;
   width: 250px;
   &After {
     background: #fff;
@@ -14,10 +14,10 @@
     box-shadow: 0 0 5px 1px rgba(var(--jb7, 0, 0, 0), 0.0975);
     content: ' ';
     height: 14px;
-    left: 0;
     margin: auto;
     position: absolute;
-    right: 0;
+    right: 38px !important;
+    left: auto;
     top: -6px;
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
@@ -42,13 +42,18 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.0975);
     -webkit-box-shadow: 0 0 5px rgba(var(--jb7, 0, 0, 0), 0.0975);
     box-shadow: 0 0 5px rgba(var(--jb7, 0, 0, 0), 0.0975);
+    overflow-y: auto !important;
+    width: 238px !important;
+    border-radius: 11px !important;
+    height: 150px !important;
   }
   &Before {
     content: ' ';
     height: 14px;
-    left: 115px;
     position: absolute;
     top: 1px;
+    right: 32px;
+    left: auto;
     background: white;
     width: 31px;
     z-index: 4;
@@ -59,15 +64,13 @@
     cursor: pointer;
     display: flex;
     border-bottom: solid 1px #dbdbdb;
-    img {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      margin-right: 15px;
+    i {
+      font-size: 17px;
+      color: #262626;
     }
     span {
-      font-weight: 600;
       width: 100%;
+      margin-left: 15px;
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;

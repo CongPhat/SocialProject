@@ -1,0 +1,27 @@
+.createPost {
+  background: white;
+  padding: 20px;
+  border: 1px solid #dbdbdb;
+  a {
+    img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+    }
+  }
+  &Button {
+    width: 100%;
+    text-align: left;
+    margin-left: 20px;
+    background: var(--comment-button);
+    color: var(--secondary-text);
+    font-weight: 300;
+    padding: 7px 14px;
+    font-size: 16px;
+    border-radius: 20px;
+    transition: 0.5s;
+    &:hover {
+      background: var(--comment-button-hover);
+    }
+  }
+}

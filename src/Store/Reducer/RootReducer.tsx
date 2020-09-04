@@ -6,6 +6,7 @@ import { HeaderReducer } from './Header/Header.Reducer'
 import { combineReducers } from 'redux'
 import { PostsReducer } from './Posts/Posts.Reducer'
 import { ChatsRuducer } from './Chats/Chats.Reducer'
+import { HomeReducer } from './Home/Home.Reducer'
 
 export const RootReducer = combineReducers({
   toDoList: ToDoListReducer,
@@ -15,4 +16,5 @@ export const RootReducer = combineReducers({
   PostsReducer,
   HeaderReducer,
   ChatsRuducer,
+  HomeReducer,
 })

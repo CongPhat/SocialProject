@@ -1,5 +1,8 @@
 .home {
   display: block;
-  width: 33%;
+  width: 50%;
   margin: auto;
+  &Post {
+    width: 60%;
+  }
 }

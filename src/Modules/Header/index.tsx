@@ -4,13 +4,19 @@ import SearchComponent from './components/Search'
 import { useDispatch } from 'react-redux'
 import { SearchData, NoSearch } from '@Store/Reducer/Header/Header.Action'
 import useMemoSelector from '@Common/useMemoSelector'
+import UserHeaderComponent from './components/UserHeaderComponent'
+import { withRouter } from 'react-router-dom'
 
-const { header, headerMain } = styles
+const { header, headerMain, headerImage } = styles
 const DropdownComponent = React.lazy(() => import('./components/Dropdown'))
 
-interface Props {}
+const logo = require('@assets/images/logo_drop.png').default
 
-const Header: React.FC<Props> = () => {
+interface Props {
+  history: any
+}
+
+const Header: React.FC<Props> = ({ history }) => {
   const { search } = useMemoSelector('HeaderReducer', ['search'])
   const dispatch = useDispatch()
   const handleSearch = useCallback(values => {
@@ -24,16 +30,22 @@ const Header: React.FC<Props> = () => {
   }, [])
   return (
     <div className={`${header} d-flex align-items-center`}>
-      <div className={`${headerMain} text-right`}>
-        <SearchComponent actionSearch={handleSearch} actionNoSearch={handleNoSearch} />
-        {search !== '' && (
-          <Suspense fallback={<div></div>}>
-            <DropdownComponent actionClick={handleClick} />
-          </Suspense>
-        )}
+      <div className={`${headerMain} text-right d-flex align-items-center justify-content-between`}>
+        <div className={`${headerImage}`} onClick={() => history.push('/')}>
+          <img src={logo} alt="Tiny" />
+        </div>
+        <div className="position-relative">
+          <SearchComponent actionSearch={handleSearch} actionNoSearch={handleNoSearch} />
+          {search !== '' && (
+            <Suspense fallback={<div></div>}>
+              <DropdownComponent actionClick={handleClick} />
+            </Suspense>
+          )}
+        </div>
+        <UserHeaderComponent />
       </div>
     </div>
   )
 }
 
-export default Header
+export default withRouter(Header)

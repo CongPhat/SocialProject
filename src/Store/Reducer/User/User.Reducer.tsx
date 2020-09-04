@@ -184,6 +184,7 @@ export const UserReducer = (state = initStateUser, action: any) => {
               }
               return itemComment
             })
+            return commentChild
           }
           return item
         })

@@ -1,6 +1,7 @@
 .itemPostElement {
   border: 1px solid #dbdbdb;
   margin-bottom: 60px;
+  background: white;
   &Header {
     display: block;
     &Content {
@@ -45,6 +46,7 @@
       }
     }
     &Content {
+      a,
       span {
         display: inline-block;
         &:first-child {

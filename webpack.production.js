@@ -2,7 +2,7 @@ var webpack = require('webpack')
 var path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin') // mini files all
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 // const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -12,6 +12,7 @@ const PurgecssPlugin = require('purgecss-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 var BrotliPlugin = require('brotli-webpack-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const rootDir = path.resolve(process.cwd())
 const assetsPath = path.resolve(rootDir, 'src/assets')
@@ -121,19 +122,48 @@ var config = {
     //   paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
     // }),
     new CleanWebpackPlugin(['dist']),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        warnings: false,
-        parse: {},
-        compress: {},
-        mangle: true, // Note `mangle.properties` is `false` by default.
-        output: null,
-        toplevel: false,
-        nameCache: null,
-        ie8: false,
-        keep_fnames: true,
+    new TerserPlugin({
+      parallel: true,
+      terserOptions: {
+        ecma: 6,
       },
     }),
+    new UglifyJSPlugin({
+      test: /\.tsx($|\?)/i,
+      sourceMap: false,
+      uglifyOptions: {
+        output: {
+          comments: false, // remove comments
+        },
+        compress: {
+          unused: true,
+          dead_code: true, // big one--strip code that will never execute
+          // warnings: false, // good for prod apps so users can't peek behind curtain
+          drop_debugger: true,
+          conditionals: true,
+          evaluate: true,
+          drop_console: true, // strips console statements
+          sequences: true,
+          booleans: true,
+        },
+      },
+    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   // minChunks: (module) => /node_modules/.test(module.context)
+    //   minChunks(module, count) {
+    //     var context = module.context
+    //     return context && context.indexOf('node_modules') >= 0
+    //   },
+    // }),
+
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'react',
+    //   minChunks(module, count) {
+    //     var context = module.context
+    //     return context && context.indexOf('node_modules/react') >= 0
+    //   },
+    // }),
     // new PreloadWebpackPlugin({
     //   rel: 'preload',
     //   as(entry) {

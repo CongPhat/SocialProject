@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom'
 const { dropdown, dropdownAfter, dropdownBefore, dropdownItem } = styles
 
 interface Props {
-  actionClick: () => void
+  actionClick?: () => void
+  className?: string
 }
 
 const DropdownComponent: React.FC<Props> = props => {
@@ -15,7 +16,7 @@ const DropdownComponent: React.FC<Props> = props => {
     props.actionClick()
   }, [])
   return (
-    <div className={`${dropdown}`}>
+    <div className={`${dropdown} ${props.className}`}>
       <div className={`${dropdownAfter}`}></div>
       <ul>
         {dataSearch.map((item: any, index: number) => {

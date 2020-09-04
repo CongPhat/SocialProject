@@ -62,26 +62,32 @@ const ViewUserComponent: React.FC<Props> = props => {
           <div className={`${viewUserInfor}`}>
             <div className={`${viewUserInforTop} d-flex`}>
               <h6>{detailUser.name}</h6>
-              {!detailUser.isFriend && (
-                <ButtonComponent
-                  text="Kết bạn"
-                  typeColor="blue"
-                  onClick={handleClickAddFriend}
-                  loading={loadingBtn}
-                />
-              )}
-              {detailUser.isFriend && detailUser.isFriend.status === 1 && (
+              {detailUser.isOwner ? (
+                <ButtonComponent text="Sửa thông tin" onClick={handleClickModal} />
+              ) : (
                 <>
-                  <ButtonComponent text="Bạn bè" onClick={handleClickModal} />
-                  <ButtonComponent text="Tin nhắn" onClick={handleClickMessage} />
+                  {!detailUser.isFriend && (
+                    <ButtonComponent
+                      text="Kết bạn"
+                      typeColor="blue"
+                      onClick={handleClickAddFriend}
+                      loading={loadingBtn}
+                    />
+                  )}
+                  {detailUser.isFriend && detailUser.isFriend.status === 1 && (
+                    <>
+                      <ButtonComponent text="Bạn bè" onClick={handleClickModal} />
+                      <ButtonComponent text="Tin nhắn" onClick={handleClickMessage} />
+                    </>
+                  )}
+                  {detailUser.isFriend && detailUser.isFriend.status === 0 && (
+                    <ButtonComponent
+                      text="Chờ xác nhận"
+                      onClick={handleClickModal}
+                      // loading={loadingBtn}
+                    />
+                  )}
                 </>
-              )}
-              {detailUser.isFriend && detailUser.isFriend.status === 0 && (
-                <ButtonComponent
-                  text="Chờ xác nhận"
-                  onClick={handleClickModal}
-                  // loading={loadingBtn}
-                />
               )}
             </div>
             <div className={`${viewUserInforCenter}`}>
