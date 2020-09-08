@@ -15,6 +15,11 @@ export const PostsReducer = (state = initStatePosts, action: any) => {
         ...state,
         listPosts: action.data,
       }
+    case ACTION_POSTS.INSERT_POST_NEW:
+      return {
+        ...state,
+        listPosts: [action.payload, ...state.listPosts],
+      }
     default:
       return state
   }

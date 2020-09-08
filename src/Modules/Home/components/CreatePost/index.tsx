@@ -3,6 +3,8 @@ import styles from './style.module.scss'
 import { ICreatePost } from './CreatePost.Interface'
 import useMemoSelector from '@Common/useMemoSelector'
 import { Form, Input, InputNumber, Button } from 'antd'
+import { useDispatch } from 'react-redux'
+import { createPostAction } from '@Store/Reducer/Home/Home.Action'
 const {
   createPost,
   createPostHeader,
@@ -16,28 +18,40 @@ interface Iprops {}
 
 const CreatePost = (props: Iprops) => {
   const { dataUser } = useMemoSelector('LoginReducer', ['dataUser'])
-  const [image, setImage] = useState<any>('')
+  const [image, setImage] = useState<any>({
+    file: null,
+    fileReader: '',
+  })
   const [elementHeight, setElementHeight] = useState<string>('100px')
+  const dispatch = useDispatch()
   const refFile = useRef(null)
   const refTextArea = useRef(null)
+  const [form] = Form.useForm()
   const handleChooseImage = useCallback(() => {
     refFile.current.click()
   }, [image])
   const handleFile = (e: any) => {
-    console.log(124)
     const file = e.target.files[0]
+    const fileReader = file
     var reader = new FileReader()
     reader.onload = function(e) {
-      console.log(e.target.result)
-      setImage(e.target.result)
+      setImage({
+        file,
+        fileReader: e.target.result,
+      })
     }
-    reader.readAsDataURL(file)
+    reader.readAsDataURL(fileReader)
   }
-  useEffect(() => {
-    console.log(image)
-  }, [image])
+  console.log(image)
+
   const handleResize = (element: any) => {
     setElementHeight(element.target.scrollHeight + 'px')
+  }
+  const onFinish = (values: any) => {
+    const formDataCreatPost = new FormData()
+    formDataCreatPost.append('content', values.contentNewPost)
+    formDataCreatPost.append('image', image.file)
+    dispatch(createPostAction(formDataCreatPost))
   }
   return (
     <div className={`${createPost}`}>
@@ -51,7 +65,12 @@ const CreatePost = (props: Iprops) => {
         </div>
       </div>
       <div className={`${createPostContent} d-flex`}>
-        <Form name="nest-messages" style={{ width: '100%' }} className="form-new-post">
+        <Form
+          name="nest-messages"
+          style={{ width: '100%' }}
+          className="form-new-post"
+          onFinish={onFinish}
+        >
           <div className={`${createPostWrapper}`}>
             <Form.Item name="contentNewPost">
               <Input.TextArea
@@ -61,13 +80,18 @@ const CreatePost = (props: Iprops) => {
                 style={{ height: elementHeight }}
               />
             </Form.Item>
-            {image !== '' && (
+            {image.fileReader !== '' && (
               <div className={`${createPostContentImg} position-relative`}>
-                <img src={image} alt="" />
+                <img src={image.fileReader} alt="" />
                 <i
                   className="fa fa-times-circle position-absolute"
                   aria-hidden="true"
-                  onClick={() => setImage('')}
+                  onClick={() =>
+                    setImage({
+                      file: null,
+                      fileReader: '',
+                    })
+                  }
                 ></i>
               </div>
             )}

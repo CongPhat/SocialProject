@@ -24,6 +24,8 @@ export const initStateHome: IInitState = {
 export const HomeReducer = (state = initStateHome, action: any) => {
   switch (action.type) {
     case SHOW_MODAL_CREATE_POST:
+      console.log(1234)
+
       return {
         ...state,
         showModalCreatePost: !state.showModalCreatePost,
