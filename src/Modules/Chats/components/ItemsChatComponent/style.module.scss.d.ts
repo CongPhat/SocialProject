@@ -9,6 +9,7 @@ interface CssExports {
   'ItemContentRecordReverd': string;
   'ItemHeader': string;
   'ItemHeaderUser': string;
+  'ItemSendMessage': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

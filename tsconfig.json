@@ -22,13 +22,10 @@
       "@Router/*": ["Router/*"],
       "@Store/*": ["Store/*"],
       "@DataTemplate/*": ["DataTemplate/*"],
-    },
+      "@Apolo/*": ["Apolo/*"]
+    }
   },
-  "TypeRoots": [
-    "node_modules/@types"
-  ],
+  "TypeRoots": ["node_modules/@types"],
   "include": ["./src/**/*"],
-  "exclude": ["node_modules",
-    "build",
-    "scripts"]
+  "exclude": ["node_modules", "build", "scripts"]
 }

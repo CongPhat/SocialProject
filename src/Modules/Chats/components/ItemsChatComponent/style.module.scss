@@ -32,16 +32,17 @@
     }
   }
   &Content {
-    height: 380px;
+    height: 360px;
     padding: 15px;
+    overflow-y: scroll;
     &Record {
       display: flex;
       margin-bottom: 6px;
       width: 70%;
       align-items: flex-end;
       &Image {
-        width: 30px;
-        height: 30px;
+        width: 25px;
+        height: 25px;
         img {
           width: 100%;
           height: 100%;
@@ -54,7 +55,8 @@
         background: #e6e6e6;
         border-radius: 16px;
         padding: 7px 15px;
-        margin: 0 10px;
+        margin: 0 5px;
+        word-break: break-all;
       }
       &Group {
         margin-bottom: 5px;
@@ -67,6 +69,20 @@
           background-color: rgb(250, 60, 76);
           color: white;
         }
+      }
+    }
+  }
+  &SendMessage {
+    padding: 15px;
+    input {
+      height: 40px;
+      border-radius: 12px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background: var(--gray);
+      &:focus {
+        outline: none;
       }
     }
   }
