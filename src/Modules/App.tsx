@@ -14,17 +14,17 @@ interface Props {
 }
 
 const App: React.FC<Props> = ({ privateLogin }) => {
-  useEffect(() => {
-    const socket = socketIOClient(BASE_URL_SOCKET)
-    console.log(socket)
+  // useEffect(() => {
+  //   const socket = socketIOClient(BASE_URL_SOCKET)
+  //   console.log(socket)
 
-    socket.on('connect', () => {
-      socket.emit('new user', '1234', '123123')
-    })
-    socket.on('disconnect', () => {
-      console.log('dis-connect')
-    })
-  }, [])
+  //   socket.on('connect', () => {
+  //     socket.emit('new user', '1234', '123123')
+  //   })
+  //   socket.on('disconnect', () => {
+  //     console.log('dis-connect')
+  //   })
+  // }, [])
   return (
     <>
       {privateLogin ? (
