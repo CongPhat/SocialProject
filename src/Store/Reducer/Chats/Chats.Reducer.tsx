@@ -1,6 +1,6 @@
 import { ACTION_CHATS } from './Chats.Action'
 
-const { ADD_USER_CHAT, SET_CONTENT_CHAT } = ACTION_CHATS
+const { ADD_USER_CHAT, SET_CONTENT_CHAT, CLOSE_USER_CHAT } = ACTION_CHATS
 
 interface IInitState {
   showChats: boolean
@@ -37,6 +37,14 @@ export const ChatsRuducer = (state = initStateChats, action: any) => {
           }
           return item
         }),
+      }
+    case CLOSE_USER_CHAT:
+      console.log(state.listChat)
+      console.log(action.payload)
+
+      return {
+        ...state,
+        listChat: state.listChat.filter(item => item._id !== action.payload),
       }
     default:
       return state
