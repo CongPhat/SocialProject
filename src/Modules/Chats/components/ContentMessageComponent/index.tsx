@@ -5,6 +5,7 @@ import { useQuery, gql, useSubscription } from '@apollo/client'
 import jwt from 'jsonwebtoken'
 import { Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
+import { GET_MESSAGE, COMMENTS_SUBSCRIPTION_CONTENT } from '@Modules/Chats/Chats.graphql'
 
 const dateFormat = require('dateformat')
 const {
@@ -18,73 +19,35 @@ const {
 const jwtToken = localStorage.getItem('jwtToken')
 const { id } = JSON.parse(JSON.stringify(jwt.decode(jwtToken)))
 
-const GET_MESSAGE = gql`
-  query GetMessages($id: String!, $idUser: String!) {
-    messages(id: $id, idUser: $idUser) {
-      content
-      _id
-      like
-      isSend
-      date
-      userSend {
-        name
-        image
-        _id
-      }
-      userReceive {
-        name
-        image
-        _id
-      }
-    }
-  }
-`
-
-const COMMENTS_SUBSCRIPTION = gql`
-  subscription OnCommentAdded {
-    newMessage {
-      content
-      _id
-      like
-      isSend
-      date
-      userSend {
-        name
-        image
-        _id
-      }
-      userReceive {
-        name
-        image
-        _id
-      }
-    }
-  }
-`
-
 interface Iprops {
   id: String
 }
 
 const ContentMessageComponent = (props: Iprops) => {
   const [dataCurrent, setDataCurrent] = useState<Array<any>>([])
+  const [payload, setPayload] = useState<number>(0)
+  const [loadContentFirst, setLoadContentFirst] = useState<boolean>(false)
+  const refBottomContent = useRef(null)
   const refItemContent = useRef(null)
-  const { ...resultQuery } = useQuery(GET_MESSAGE, {
+  const refItemContentFirst = useRef(null)
+  const { data: dataMessageQuery, loading } = useQuery(GET_MESSAGE, {
+    variables: { id, idUser: props.id, payload: payload },
+  })
+  const { data } = useSubscription(COMMENTS_SUBSCRIPTION_CONTENT, {
     variables: { id, idUser: props.id },
   })
-  const { data } = useSubscription(COMMENTS_SUBSCRIPTION)
 
   useEffect(() => {
-    if (resultQuery.data) {
-      const convertTime = resultQuery.data.messages.map((item: any) => {
+    if (dataMessageQuery) {
+      const convertTime = dataMessageQuery.messages.map((item: any) => {
         return {
           ...item,
           date: dateFormat(new Date(parseInt(item.date)), 'dd/mm/yyyy HH:MM'),
         }
       })
-      setDataCurrent(convertTime)
+      setDataCurrent(pre => [...convertTime, ...pre])
     }
-  }, [resultQuery.data])
+  }, [dataMessageQuery])
   useEffect(() => {
     data &&
       (data.newMessage.userReceive._id == props.id ||
@@ -97,18 +60,34 @@ const ContentMessageComponent = (props: Iprops) => {
         },
       ])
   }, [data])
+  const ScrollContentMessage = () => {
+    if (refItemContent.current.scrollTop === 0) {
+      setPayload(pre => pre + 1)
+    }
+  }
   useEffect(() => {
-    refItemContent.current.scrollIntoView({ block: 'end' })
-  }, [dataCurrent])
+    if (dataCurrent.length > 0) {
+      payload !== 0
+        ? refItemContentFirst.current &&
+          refItemContentFirst.current.scrollIntoView({ block: 'end' })
+        : refBottomContent.current.scrollIntoView({ block: 'end' })
+    }
+    refItemContent.current.removeEventListener('scroll', ScrollContentMessage)
+    refItemContent.current.addEventListener('scroll', ScrollContentMessage)
+    return () => {
+      refItemContent.current.removeEventListener('scroll', ScrollContentMessage)
+    }
+  }, [dataCurrent, payload])
 
   return (
-    <div className={`${ItemContent}`}>
+    <div className={`${ItemContent}`} ref={refItemContent}>
       {dataCurrent.length > 0 &&
         dataCurrent.map((item: any, index: number) => {
           return (
             <div
               className={`${ItemContentRecord} ${item.isSend == id && ItemContentRecordReverd}`}
               key={index}
+              ref={index == dataCurrent.length - payload * 10 ? refItemContentFirst : null}
             >
               <div className={`${ItemContentRecordImage}`}>
                 {!dataCurrent[index + 1] ? (
@@ -139,9 +118,9 @@ const ContentMessageComponent = (props: Iprops) => {
             </div>
           )
         })}
-      <div ref={refItemContent} />
+      <div ref={refBottomContent} id="bottomContentMessage" />
     </div>
   )
 }
 
-export default ContentMessageComponent
+export default React.memo(ContentMessageComponent)

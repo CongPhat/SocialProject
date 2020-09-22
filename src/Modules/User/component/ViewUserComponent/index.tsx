@@ -1,9 +1,12 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, Suspense } from 'react'
 import useMemoSelector from '@Common/useMemoSelector'
 import styles from './style.module.scss'
 import ButtonComponent from '@Common/ButtonComponent'
 import { Modal, Button } from 'antd'
 
+const ContentModalListFriend = React.lazy(() =>
+  import('@Modules/User/component/ContentModalFriend'),
+)
 const {
   viewUser,
   viewUserImage,
@@ -25,6 +28,7 @@ interface Props {
   modalFriend: () => void
   addFriendSuccess: (id: string) => void
   showMessage: (item: any) => void
+  modalListFriend: (id: string) => void
 }
 
 interface RootState {
@@ -32,10 +36,11 @@ interface RootState {
 }
 
 const ViewUserComponent: React.FC<Props> = props => {
-  const { detailUser, loadingBtn, showModalFriend } = useMemoSelector('user', [
+  const { detailUser, loadingBtn, showModalFriend, showModalListFriend } = useMemoSelector('user', [
     'detailUser',
     'loadingBtn',
     'showModalFriend',
+    'showModalListFriend',
   ])
   const handleClickAddFriend = useCallback(() => {
     props.addFriend(detailUser._id)
@@ -96,14 +101,20 @@ const ViewUserComponent: React.FC<Props> = props => {
                 <span>posts</span>
               </div>
               <div className={`${viewUserInforCenterItem}`}>
-                <strong>{detailUser.totalFriend}</strong>
-                <span>friends</span>
+                <div
+                  onClick={() => props.modalListFriend(detailUser._id)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <strong>{detailUser.totalFriend}</strong>
+                  <span>friends</span>
+                </div>
               </div>
             </div>
             <div className={`${viewUserInforBottom}`}>
               <span>{detailUser.description}</span>
             </div>
           </div>
+
           <Modal
             title=""
             visible={showModalFriend}
@@ -184,6 +195,22 @@ const ViewUserComponent: React.FC<Props> = props => {
                   )}
               </div>
             </div>
+          </Modal>
+          <Modal
+            title=""
+            visible={showModalListFriend.show}
+            onCancel={() => props.modalListFriend(detailUser._id)}
+            footer={null}
+            className="modal-list-friend"
+          >
+            {showModalListFriend.show && (
+              <Suspense fallback={<div></div>}>
+                <ContentModalListFriend
+                  id={showModalListFriend.id}
+                  closeModal={() => props.modalListFriend('')}
+                />
+              </Suspense>
+            )}
           </Modal>
         </div>
       )}

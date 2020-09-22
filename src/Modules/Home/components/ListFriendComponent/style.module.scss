@@ -1,0 +1,69 @@
+.friend {
+  &Item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &Image {
+      margin-right: 10px;
+      position: relative;
+      &:after {
+        content: '';
+        background: var(--green);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 0;
+        right: -4px;
+        padding: 4px;
+        border: 2px solid white;
+      }
+      img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+      }
+    }
+    h6 {
+      font-weight: 600;
+      font-size: 15px;
+    }
+  }
+  &Modal {
+    position: fixed;
+    transform: translateX(289px);
+  }
+  &Tooltip {
+    display: block;
+  }
+}
+.itemTooltip {
+  img {
+    width: 100px;
+    height: 100px;
+    margin-right: 15px;
+  }
+  h6,
+  span {
+    color: black;
+  }
+  h6 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  span {
+    width: 100%;
+    display: block;
+  }
+}
+.button {
+  width: 100%;
+}
+.wrapper {
+  transition: 0.5s;
+  padding: 7px;
+  border-radius: 5px;
+  &:hover {
+    background: var(--gray);
+  }
+}

@@ -36,11 +36,24 @@ body {
   --grayText: #262626;
   --red: #ed4956;
   --gray: #dbdbdb;
+  --green: #04b404;
+  --text-grey: #8e8e8e;
   --comment-button: #f0f2f5;
   --comment-button-hover: #e6e6e6;
   --secondary-text: #65676b;
   --divider: #ced0d4;
   --media-inner-border: rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+
+.bo-ra-50 {
+  border-radius: 50%;
 }
 
 /*---------------------------------Custom Antd--------------------------------*/
@@ -182,5 +195,26 @@ button {
   .ant-btn {
     width: 100% !important;
     border-radius: 10px !important;
+  }
+}
+
+.modal-list-friend {
+  width: 20% !important;
+}
+
+//tool-tip
+.tooltip-friend-online {
+  max-width: 400px !important;
+  width: 350px;
+  border-radius: 10px;
+  .ant-tooltip {
+    &-arrow {
+      display: none !important;
+    }
+    &-inner {
+      background: white !important;
+      padding: 20px !important;
+      border-radius: 10px !important;
+    }
   }
 }

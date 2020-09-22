@@ -21,6 +21,7 @@ const {
   LOAD_ADD_COMMENT,
   REPLY_COMMENT,
   NO_REPLY_COMMENT,
+  MODAL_LIST_FRIEND,
 } = ACTION_USER
 
 interface IInitState {
@@ -37,6 +38,10 @@ interface IInitState {
   } & null
   loadingBtn: boolean
   showModalFriend: boolean
+  showModalListFriend: {
+    show: boolean
+    id: string
+  }
   listPostUser: any
   page: number
   statusLoadPost: boolean
@@ -63,6 +68,10 @@ export const initStateUser: IInitState = {
   detailUser: null,
   loadingBtn: false,
   showModalFriend: false,
+  showModalListFriend: {
+    show: false,
+    id: '',
+  },
   listPostUser: [], // list post
   page: 0, // page call api
   statusLoadPost: true, // false === not call api continue
@@ -115,6 +124,14 @@ export const UserReducer = (state = initStateUser, action: any) => {
       return {
         ...state,
         showModalFriend: !state.showModalFriend,
+      }
+    case MODAL_LIST_FRIEND:
+      return {
+        ...state,
+        showModalListFriend: {
+          show: !state.showModalListFriend.show,
+          id: action.payload,
+        },
       }
     case SHOW_MODAL_POST_USER:
       return {

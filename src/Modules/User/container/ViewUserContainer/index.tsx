@@ -7,6 +7,7 @@ import {
   addFriendSuccess,
   closeFriend,
   actionModalFriend,
+  actionModalListFriend,
 } from '@Store/Reducer/User/User.Action'
 import ListUserComponent from '@Modules/User/component/ItemUser/index'
 import { useHistory, useParams } from 'react-router-dom'
@@ -41,6 +42,10 @@ const ViewUserContainer: React.FC<Props> = ({}) => {
     dispatch(AddUserChat(item))
   }, [])
 
+  const handleModalListFriend = useCallback((id: string) => {
+    dispatch(actionModalListFriend(id))
+  }, [])
+
   return (
     <>
       <ViewUserComponent
@@ -49,6 +54,7 @@ const ViewUserContainer: React.FC<Props> = ({}) => {
         modalFriend={handleModalFriend}
         addFriendSuccess={handleAddFriendSuccess}
         showMessage={handleShowMessage}
+        modalListFriend={handleModalListFriend}
       />
     </>
   )

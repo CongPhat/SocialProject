@@ -9,7 +9,6 @@ import {
   addCommentAPI,
   getListCommentAPI,
 } from './User.Services'
-import { debounce } from 'lodash'
 
 interface IACTION_USER {
   GET_USER_SUCCESS: string
@@ -32,6 +31,7 @@ interface IACTION_USER {
   LOAD_ADD_COMMENT: string
   REPLY_COMMENT: string
   NO_REPLY_COMMENT: string
+  MODAL_LIST_FRIEND: string
 }
 
 export const ACTION_USER: IACTION_USER = {
@@ -55,6 +55,7 @@ export const ACTION_USER: IACTION_USER = {
   LOAD_ADD_COMMENT: 'LOAD_ADD_COMMENT',
   REPLY_COMMENT: 'REPLY_COMMENT',
   NO_REPLY_COMMENT: 'NO_REPLY_COMMENT',
+  MODAL_LIST_FRIEND: 'MODAL_LIST_FRIEND',
 }
 
 export const loading = () => {
@@ -193,6 +194,11 @@ export const closeFriend = (idFriend: string) => {
 export const actionModalFriend = () => {
   return async function(dispatch: any) {
     dispatch({ type: ACTION_USER.MODAL_FRIEND })
+  }
+}
+export const actionModalListFriend = (id: string) => {
+  return async function(dispatch: any) {
+    dispatch({ type: ACTION_USER.MODAL_LIST_FRIEND, payload: id })
   }
 }
 export const addComment = (data: string) => {

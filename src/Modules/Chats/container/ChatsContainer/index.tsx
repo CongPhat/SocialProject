@@ -11,6 +11,7 @@ import { ApolloProvider } from '@apollo/client'
 import client from '@Apolo/index'
 import { AddUserChat } from '@Store/Reducer/Chats/Chats.Action'
 import jwt from 'jsonwebtoken'
+import { COMMENTS_SUBSCRIPTION_CONTAINER } from '@Modules/Chats/Chats.graphql'
 const jwtToken = localStorage.getItem('jwtToken')
 const { id } = JSON.parse(JSON.stringify(jwt.decode(jwtToken)))
 const audio = new Audio(require('@assets/audio/test.mp3').default)
@@ -22,34 +23,16 @@ const EXCHANGE_RATES = gql`
     }
   }
 `
-const COMMENTS_SUBSCRIPTION = gql`
-  subscription OnCommentAdded {
-    newMessage {
-      content
-      _id
-      like
-      isSend
-      date
-      userSend {
-        name
-        image
-        _id
-      }
-      userReceive {
-        name
-        image
-        _id
-      }
-    }
-  }
-`
+
 interface Iprops {}
 
 const ChatsContainer = (props: Iprops) => {
   const dispatch = useDispatch()
   const { listChat } = useMemoSelector('ChatsRuducer', ['listChat'])
 
-  const { data } = useSubscription(COMMENTS_SUBSCRIPTION)
+  const { data } = useSubscription(COMMENTS_SUBSCRIPTION_CONTAINER, {
+    variables: { idUser: id },
+  })
   useEffect(() => {
     if (data) {
       const chatFindList = listChat.find(
