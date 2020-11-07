@@ -108,7 +108,7 @@ var config = {
     ],
   },
   plugins: [
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new HtmlWebpackPlugin({
       title: 'Code Splitting',
       template: `${assetsPath}/index.html`,

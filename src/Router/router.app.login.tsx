@@ -18,6 +18,10 @@ const Market = Loadable({
   loader: () => import('@Modules/Market/market'),
   loading: LoadingPage,
 })
+const Form = Loadable({
+  loader: () => import('@Modules/Form'),
+  loading: LoadingPage,
+})
 
 export const routerAppLogin: Object[] = [
   {
@@ -39,6 +43,11 @@ export const routerAppLogin: Object[] = [
     path: '/market',
     exact: true,
     main: ({ match, location, history }: any) => <Market />,
+  },
+  {
+    path: '/form',
+    exact: true,
+    main: ({ match, location, history }: any) => <Form />,
   },
   {
     path: '',

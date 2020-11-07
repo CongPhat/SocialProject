@@ -7,6 +7,8 @@ import { ShowRouter } from '@Router/showRouter'
 import socketIOClient from 'socket.io-client'
 import { ApolloProvider } from '@apollo/client'
 import client from '@Apolo/index'
+import { createSliceP } from 'custom-redux-toolkit'
+console.log(createSliceP)
 
 export const BASE_URL_SOCKET = 'http://localhost:3001'
 

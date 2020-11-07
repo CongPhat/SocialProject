@@ -1,0 +1,22 @@
+.error-message {
+  color: red;
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+}
+.form-item {
+  &-wrapper {
+    &-label {
+      margin-right: 1rem;
+      font-size: 1rem;
+      display: block;
+    }
+  }
+}
+.label-required {
+  &::after {
+    content: '*';
+    margin-left: 5px;
+    color: red;
+  }
+}

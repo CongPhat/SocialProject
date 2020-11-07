@@ -1,0 +1,18 @@
+.custom-input {
+  input {
+    border: 1px solid #bbb;
+    border-radius: 20px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 25px;
+    transition: 0.5s;
+    width: 100%;
+    &:active,
+    &:focus {
+      outline: none;
+      border: 1px solid black;
+    }
+  }
+}

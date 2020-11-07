@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   app:
-    image: learning-docker/reactjs-v1
+    image: registry.gitlab.com/phat.huynh/cicdphat:latest
     ports:
-      - '3000:3000'
+      - '6969:80'
     restart: unless-stopped
