@@ -35,9 +35,7 @@ export const FormContext = createContext(null)
 
 const FormElement = ({ children, onFinish, onFinishFailed, form }: Iprops) => {
   const handleSubmit = async () => {
-    const { formItem } = form.refForm.current;
-    console.log(formItem, 'formItemformItemformItem');
-    
+    const { formItem } = form.refForm.current;    
     let formDraft = {...formItem};
     const keysFormItem = Object.keys(formItem)
 

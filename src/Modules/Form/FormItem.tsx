@@ -17,6 +17,7 @@ interface Iprops {
   initialValue?: any
   value?: any
   label?: string
+  valuesProps?: 'checked'
 }
 export interface IValueRequired {
   value: string | number
@@ -38,7 +39,17 @@ interface IData {
 //   color: red;
 // `
 
-const FormItem = ({ children, rules, refFormItem, name, initialValue, value, label }: Iprops) => {
+const FormItem = ({
+  children,
+  rules,
+  refFormItem,
+  name,
+  initialValue,
+  value,
+  label,
+  valuesProps,
+}: Iprops) => {
+  if (children == undefined) throw new Error('The form item should have a child value.')
 
   const refChildren = useRef(null)
   const refError = useRef(null)
@@ -52,14 +63,11 @@ const FormItem = ({ children, rules, refFormItem, name, initialValue, value, lab
     error: null,
     message: '',
   })
-  
-  const fillError = (status: boolean, message?: string) => {        
+
+  const fillError = (status: boolean, message?: string) => {
     setErrorMessage(pre => {
       if (status != pre.error || message != pre.message) {
-        return {...pre,
-          error: status,
-          message: message || '',
-        }
+        return { ...pre, error: status, message: message || '' }
       }
       return pre
     })
@@ -71,23 +79,24 @@ const FormItem = ({ children, rules, refFormItem, name, initialValue, value, lab
     requiredError: (value?: any): Promise<any> => {
       return new Promise((rel, rej) => {
         if (rules) {
-          const dataReceiveConvert:IData = {};
+          const dataReceiveConvert: IData = {}
           Object.keys(refForm.current.formItem).map(key => {
             dataReceiveConvert[key] = refForm.current.formItem[key].value
           })
-          const ruleFind = rules.find(x => (x.required && x.handle && x.handle(value, dataReceiveConvert)) || value == '')          
-          if(ruleFind) {
+          const ruleFind = rules.find(
+            x => (x.required && x.handle && x.handle(value, dataReceiveConvert)) || value == '',
+          )
+          if (ruleFind) {
             rej('Error')
             fillError(false, ruleFind.message)
           } else {
             rel()
             fillError(true)
           }
-         }
         }
-      )
+      })
     },
-    setValue: (value: any) => {      
+    setValue: (value: any) => {
       if (refChildren.current) {
         refChildren.current.value = value
       }
@@ -102,20 +111,22 @@ const FormItem = ({ children, rules, refFormItem, name, initialValue, value, lab
       ...refForm.current.formItem,
       [name]: { ...valueRequired },
     }
-    if (initialValue) {      
+    refForm.current.formItem[name].requiredError(null)
+    if (initialValue !== undefined) {
       refForm.current.formItem[name]?.setValue(initialValue)
-      refForm.current.formItem[name].requiredError(initialValue).then(() => {
-        setValueFieldRef(initialValue, true)
-      }).catch(() => {
-        setValueFieldRef(initialValue, false)
-      })
-    } else {
-      refForm.current.formItem[name].requiredError(null)
+      refForm.current.formItem[name]
+        .requiredError(initialValue)
+        .then(() => {
+          setValueFieldRef(initialValue, true)
+        })
+        .catch(() => {
+          setValueFieldRef(initialValue, false)
+        })
     }
   }, [])
 
-  useEffect(() => {    
-    if (value) {
+  useEffect(() => {
+    if (value !== undefined) {
       refForm.current.formItem[name]?.setValue(value)
       handleElementChangeValue(value)
     }
@@ -127,20 +138,22 @@ const FormItem = ({ children, rules, refFormItem, name, initialValue, value, lab
     }
   }, [errorMessage])
 
-  const handleElementChangeValue = (valueChange: any) => {    
-      refForm.current.formItem[name]?.requiredError(valueChange).then(() => {
+  const handleElementChangeValue = (valueChange: any) => {
+    refForm.current.formItem[name]
+      ?.requiredError(valueChange)
+      .then(() => {
         setValueFieldRef(valueChange, true)
-      }).catch(() => {
+      })
+      .catch(() => {
         setValueFieldRef(valueChange, false)
       })
-      
   }
   const propsError = useMemo(() => {
     return React.createElement('span', { ref: refError, className: 'error-message' })
   }, [value])
 
   const propsElement = useCallback(
-    (item: any) => {      
+    (item: any) => {
       return {
         ...item,
         props: {
@@ -148,6 +161,8 @@ const FormItem = ({ children, rules, refFormItem, name, initialValue, value, lab
           refElement,
           value: value,
           id: name,
+          defaultValue: initialValue || item.props.defaultValue,
+          checked: valuesProps == 'checked' && value,
         },
       }
     },
@@ -156,18 +171,20 @@ const FormItem = ({ children, rules, refFormItem, name, initialValue, value, lab
 
   const createLabel = useCallback(() => {
     return React.createElement('label', {
-      for: name,
+      htmlFor: name,
       children: label,
       className: `form-item-wrapper-label ${rules && 'label-required'}`,
     })
   }, [])
   const createAllFormItem = useCallback((ElementCurrent: any) => {
-    return <div className="form-item-wrapper">
-            {label && createLabel()}
-            {ElementCurrent}
-            {propsError}
-          </div>
-  },[])
+    return (
+      <div className="form-item-wrapper">
+        {label && createLabel()}
+        {ElementCurrent}
+        {propsError}
+      </div>
+    )
+  }, [])
 
   const propsChildren = useMemo(() => {
     return {
@@ -198,13 +215,11 @@ const FormItem = ({ children, rules, refFormItem, name, initialValue, value, lab
   }
 
   const childrenNew = useMemo(() => {
-    return (AllElementDefault.find(x => children.type == x)) ? (
-      createAllFormItem(React.cloneElement(children, propsChildren))
-    ) : typeof children.type != 'string' && AllElement.find(x => children.type.name == x) ? (
-      createAllFormItem(propsElement(children))
-    ) : (
-      handleNode(children.props.children)
-    )
+    return AllElementDefault.find(x => children.type == x)
+      ? createAllFormItem(React.cloneElement(children, propsChildren))
+      : typeof children.type != 'string' && AllElement.find(x => children.type.name == x)
+      ? createAllFormItem(propsElement(children))
+      : handleNode(children.props.children)
   }, [children])
 
   const setValueFieldRef = (value: string, statusError: boolean) => {

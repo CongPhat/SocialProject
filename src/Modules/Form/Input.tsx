@@ -21,7 +21,7 @@ const InputElement = ({
   id,
 }: Iprops) => {
   const ref = useRef(null)
-  const handleChange = (e: any) => {    
+  const handleChange = (e: any) => {
     refElement.current.changeValue(e.target.value)
     onChange && onChange(e.target.value)
   }
@@ -29,7 +29,9 @@ const InputElement = ({
     ref.current.value = value
   }
 
-  refElement.current.setValue = controlValue
+  if (refElement) {
+    refElement.current.setValue = controlValue
+  }
   return (
     <div className={`custom-input ${className}`}>
       <input
