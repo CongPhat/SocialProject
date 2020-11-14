@@ -1,2 +1,2 @@
-export const AllElement = ['InputElement', 'SelectElement', 'Checkbox', 'CheckboxGroup']
+export const AllElement = ['InputElement', 'Select', 'Checkbox', 'CheckboxGroup']
 export const AllElementDefault = ['input', 'select']

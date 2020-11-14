@@ -1,6 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import ReactDOM from 'react-dom'
+import Empty from './Empty'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import Option from './Option'
 import './Select.scss'
 interface Iprops {
   element?: Array<any>
@@ -11,17 +14,22 @@ interface Iprops {
   value?: string | number | Array<string | number>
   children?: any
   className?: string
-  id?: string
   multiple?: boolean
   remove?: boolean
-  placeholder?: string
+  placeholder?: ReactNode
   defaultValue?: string | number | Array<string | number>
+  style?: any
+  disabled?: boolean
+  loading?: boolean
+  customLoading?: ReactNode
+  customRemove?: ReactNode
 }
 
 interface IElement {
   key: string | number
   name: any
   fillSearch: string
+  disabled?: boolean
 }
 
 interface IStateSelect {
@@ -31,38 +39,54 @@ interface IStateSelect {
   default: boolean
 }
 
-const useOutsideAlerter = (ref: any, focusRef: any, status: boolean, data: any) => {
+const useOutsideAlerter = (refAll: any, focusRef: any, data: any) => {
   useEffect(() => {
     const handleClickOutside = (event: any) => {
-      if (ref.current && !ref.current.contains(event.target) && !status) {
-        focusRef.current.clickOutSide && focusRef.current.clickOutSide(data)
+      if (refAll) {
+        if (refAll.every((x: any) => !x.current?.contains(event.target))) {
+          focusRef.current.clickOutSide && focusRef.current.clickOutSide(data)
+        }
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [ref, focusRef, data])
+  }, [refAll, focusRef, data])
 }
 
 interface iOutsideAlerter {
   clickOutSide: (data: any) => void
   children: any
-  status: boolean
   data: any
+  element?: Array<ReactNode>
 }
 const OutsideAlerter = (props: iOutsideAlerter) => {
-  const wrapperRef = useRef(null)
   const focusRef = useRef({
     clickOutSide: props.clickOutSide || null,
   })
-  useOutsideAlerter(wrapperRef, focusRef, props.status, props.data)
+  useOutsideAlerter(props.element, focusRef, props.data)
 
-  return <div ref={wrapperRef}>{props.children}</div>
+  return <div>{props.children}</div>
 }
-const MemoOutside = OutsideAlerter
+const MemoOutside = React.memo(OutsideAlerter)
 
-const SelectElement = ({
+export const LoadingSelect = React.memo(() => {
+  return (
+    <div className="select-selection-loading">
+      <FontAwesomeIcon icon={faSpinner} />
+    </div>
+  )
+})
+export const RemoveSelect = React.memo(({ handleRemoveAllCurrent, customRemove }: any) => {
+  return (
+    <span className={`select-selection-remove`} onClick={() => handleRemoveAllCurrent()}>
+      {customRemove || <FontAwesomeIcon icon={faTimes} />}
+    </span>
+  )
+})
+
+const Select = ({
   refElement,
   onChange,
   onFocus,
@@ -70,12 +94,18 @@ const SelectElement = ({
   value,
   children,
   className,
-  id,
   multiple,
   remove,
   placeholder,
   defaultValue,
+  style,
+  disabled,
+  loading,
+  customLoading,
+  customRemove,
 }: Iprops) => {
+  const ref = useRef(null)
+  const refDropdown = useRef(null)
   const dataStructure = useMemo(
     () => ({
       key: 0,
@@ -98,6 +128,7 @@ const SelectElement = ({
           fillSearch: x.props.search
             ? x.props.search.reduce((string: string, y: string | number) => `${string} ${y}`, ``)
             : x.props.children,
+          disabled: x.props.disabled,
         }
       }),
     [childrenNew],
@@ -271,20 +302,29 @@ const SelectElement = ({
     [dropdown.current],
   )
 
+  useEffect(() => {
+    if (refDropdown.current)
+      refDropdown.current.style.top = `${ref.current.getBoundingClientRect().top +
+        ref.current.clientHeight}px`
+  }, [dropdown.current, refDropdown])
+
   if (refElement) {
     refElement.current.setValue = controlValue
   }
 
   return (
-    <MemoOutside clickOutSide={handleClickOutSide} status={dropdown.status} data={element}>
-      <div className={`select ${className}`} id={id || ''}>
+    <MemoOutside clickOutSide={handleClickOutSide} data={element} element={[ref, refDropdown]}>
+      <div className={`select ${className}`} id={'select'} ref={ref} style={style}>
         <div className={`select-wrapper`}>
-          <div className={`select-selector ${multiple && 'select-selector-multiple'}`}>
+          <div
+            className={`select-selector ${multiple && 'select-selector-multiple'} ${disabled &&
+              'select-selector-disabled'}`}
+          >
             <div
               className="select-selection"
-              onClick={handleClickSelect}
-              onFocus={onFocus}
-              onBlur={onBlur}
+              onClick={() => !disabled && handleClickSelect()}
+              onFocus={() => !disabled && onFocus}
+              onBlur={() => !disabled && onBlur}
             >
               {multiple &&
                 dropdown.current.map((item, index) => (
@@ -321,37 +361,55 @@ const SelectElement = ({
                 </span>
               )}
             </div>
-            {remove && (
-              <span className={`select-selection-remove`} onClick={handleRemoveAllCurrent}>
-                <FontAwesomeIcon icon={faTimes} />
-              </span>
+            {loading && (customLoading || <LoadingSelect />)}
+            {!loading && remove && !disabled && (
+              <RemoveSelect
+                handleRemoveAllCurrent={handleRemoveAllCurrent}
+                customRemove={customRemove}
+              />
             )}
           </div>
         </div>
-        <div
-          className={`select-dropdown ${
-            !dropdown.status ? 'select-dropdown-hidden' : 'select-dropdown-active'
-          }`}
-        >
-          <ul className={`select-dropdown-block`}>
-            {dropdown.allData.length == 0
-              ? 'Nodata'
-              : dropdown.allData.map((item: IElement, index: number) => (
-                  <li
-                    key={index}
-                    className={`select-dropdown-block-item ${dropdown.current.find(
-                      x => x.key == item.key,
-                    ) && 'select-dropdown-block-item-selected'}`}
-                    onClick={() => value == undefined && handleSelectItem(item)}
-                  >
-                    {item?.name || ''}
-                  </li>
-                ))}
-          </ul>
-        </div>
+        {ref.current &&
+          ReactDOM.createPortal(
+            <div
+              className={`select-dropdown ${
+                dropdown.status == null
+                  ? ''
+                  : !dropdown.status
+                  ? 'select-dropdown-hidden'
+                  : 'select-dropdown-active'
+              }`}
+              style={{
+                width: ref.current.clientWidth,
+                left: ref.current.getBoundingClientRect().left,
+              }}
+              ref={refDropdown}
+            >
+              <ul className={`select-dropdown-block`}>
+                {dropdown.allData.length == 0 ? (
+                  <Empty />
+                ) : (
+                  dropdown.allData.map((item: IElement, index: number) => (
+                    <li
+                      key={index}
+                      className={`select-dropdown-block-item ${dropdown.current.find(
+                        x => x.key == item.key,
+                      ) && 'select-dropdown-block-item-selected'} ${item.disabled &&
+                        'select-dropdown-block-item-disabled'}`}
+                      onClick={() => value == undefined && !item.disabled && handleSelectItem(item)}
+                    >
+                      {item?.name || ''}
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>,
+            document.querySelector('body'),
+          )}
       </div>
     </MemoOutside>
   )
 }
-
-export default SelectElement
+Select.Option = Option
+export default Select

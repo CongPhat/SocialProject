@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react'
 import FormElement from './FormElement'
 import FormItem from './FormItem'
 import InputElement from './Input'
-import SelectElement from './Select'
+import Select from './Select'
 import Option from './Option'
 import Checkbox from './Checkbox'
 import { CheckboxGroup } from './Checkbox'
+import Empty from './Empty'
 
 // const { Select, Option } = SelectElement
 
@@ -66,6 +67,7 @@ const Form = () => {
   }
   return (
     <>
+      <Empty />
       <FormElement onFinish={handleFinish} form={form} onFinishFailed={handleFailed}>
         <div>
           <div>
@@ -73,7 +75,6 @@ const Form = () => {
               key={'item2'}
               name={'test2'}
               label="Gioi tinh"
-              initialValue={'1'}
               // value={test}
               rules={[
                 {
@@ -89,22 +90,26 @@ const Form = () => {
                 // },
               ]}
             >
-              <SelectElement
-                multiple
-                remove
+              <Select
                 placeholder="Please select"
                 onChange={handleChangSelect}
                 onFocus={e => console.log(e)}
-                defaultValue={1}
+                loading={false}
+                remove
               >
                 {testSelect.map((item, index) => (
-                  <Option value={item.key} key={index} search={[item.name, item.text]}>
+                  <Option
+                    value={item.key}
+                    key={index}
+                    search={[item.name, item.text]}
+                    disabled={index == 2}
+                  >
                     <div>
                       <div>{item.name}</div>
                     </div>
                   </Option>
                 ))}
-              </SelectElement>
+              </Select>
             </FormItem>
           </div>
         </div>
@@ -190,6 +195,40 @@ const Form = () => {
           <InputElement />
         </FormItem> */}
       </FormElement>
+      <Select
+        placeholder="Please select"
+        onChange={handleChangSelect}
+        onFocus={e => console.log(e)}
+        defaultValue={3}
+        multiple
+      >
+        {testSelect.map((item, index) => (
+          <Option
+            value={item.key}
+            key={index}
+            search={[item.name, item.text]}
+            disabled={index == 2}
+          >
+            <div>
+              <div>{item.name}</div>
+            </div>
+          </Option>
+        ))}
+      </Select>
+      <Select
+        placeholder="Please select"
+        onChange={handleChangSelect}
+        onFocus={e => console.log(e)}
+        defaultValue={1}
+      >
+        {testSelect.map((item, index) => (
+          <Option value={item.key} key={index} search={[item.name, item.text]}>
+            <div>
+              <div>{item.name}</div>
+            </div>
+          </Option>
+        ))}
+      </Select>
     </>
   )
 }
