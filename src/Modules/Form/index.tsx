@@ -65,6 +65,9 @@ const Form = () => {
   const handleChangSelect = values => {
     console.log('change change')
   }
+  const handleChangeCheckboxGroup = values => {
+    console.log(values, 'handleChangeCheckboxGroup')
+  }
   return (
     <>
       <Empty />
@@ -143,26 +146,26 @@ const Form = () => {
           name={'test4'}
           label="CheckboxGroup"
           initialValue={['1234']}
-          // value={[234]}
+          // value={['1234']}
           // valuesProps={'checked'}
-          rules={
-            [
-              // {
-              //   message: 'Required',
-              //   required: true,
-              // },
-              // {
-              //   message: 'Test111',
-              //   required: true,
-              //   handle: value => {
-              //     return false
-              //   },
-              // },
-            ]
-          }
+          rules={[
+            {
+              message: 'Required',
+              required: true,
+            },
+            // {
+            //   message: 'Test111',
+            //   required: true,
+            //   handle: value => {
+            //     return false
+            //   },
+            // },
+          ]}
         >
-          <CheckboxGroup>
-            <Checkbox data="1234">Test</Checkbox>
+          <CheckboxGroup onChange={handleChangeCheckboxGroup}>
+            <Checkbox data="1234" disabled>
+              Test
+            </Checkbox>
             <Checkbox data="12345">Test124</Checkbox>
           </CheckboxGroup>
         </FormItem>
@@ -229,6 +232,12 @@ const Form = () => {
           </Option>
         ))}
       </Select>
+      <CheckboxGroup onChange={handleChangeCheckboxGroup} defaultValue={['123455']}>
+        <Checkbox data="123455" disabled>
+          Test
+        </Checkbox>
+        <Checkbox data="12345">Test124</Checkbox>
+      </CheckboxGroup>
     </>
   )
 }
