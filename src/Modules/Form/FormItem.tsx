@@ -163,6 +163,7 @@ const FormItem = ({
           id: name,
           defaultValue: initialValue || item.props.defaultValue,
           checked: valuesProps == 'checked' && value,
+          isErrorValue: item.props.defaultValue || item.props.value ? true : false,
         },
       }
     },

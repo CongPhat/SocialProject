@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import './Checkbox.scss'
-interface IpropsCheckboxGroup {
+import './Radio.scss'
+interface IpropsRadioGroup {
   children?: any
-  value?: Array<string | number>
-  defaultValue?: Array<string | number>
-  onChange?: (values: Array<string | number>) => void
+  value?: string | number
+  defaultValue?: string | number
+  onChange?: (values: string | number) => void
   refElement?: any
+  name: string
   isErrorValue?: boolean
 }
 interface IProps {
   onChange?: (checked: boolean) => void
-  onChangeGroup?: (checked: boolean, value: string | number) => void
+  onChangeGroup?: (value: string | number) => void
   id?: string
   children?: any
   checked?: boolean
@@ -20,16 +21,18 @@ interface IProps {
   value?: boolean
   className?: string
   disabled?: boolean
+  name?: string
 }
 
-export const CheckboxGroup = ({
+export const RadioGroup = ({
   children,
   value,
   defaultValue,
   onChange,
   refElement,
+  name,
   isErrorValue,
-}: IpropsCheckboxGroup) => {
+}: IpropsRadioGroup) => {
   if (isErrorValue)
     console.error(
       'Warning: Please use the value or initialValue of FormItem. In some cases it will go wrong.',
@@ -40,17 +43,17 @@ export const CheckboxGroup = ({
   )
   useEffect(() => {
     childrenNew.forEach(x => {
-      if (x.type?.name != 'Checkbox') throw new Error('Only get the checkbox attribute')
+      if (x.type?.name != 'Radio') throw new Error('Only get the radio attribute')
       if (x.props?.checked || x.props?.defaultChecked)
         console.error(
           'Warning: Please use the value or initialValue of FormItem. In some cases it will go wrong.',
         )
     })
   }, [])
-  const [data, setData] = useState<Array<string | number>>(value || defaultValue || [])
+  const [data, setData] = useState<string | number>(value || defaultValue || '')
 
-  const handleChangeValueToGroup = useCallback((checked, value) => {
-    setData(pre => (checked ? [...pre, value] : pre.filter(x => x != value)))
+  const handleChangeValueToGroup = useCallback(value => {
+    setData(value)
   }, [])
   useEffect(() => {
     if (onChange) {
@@ -70,11 +73,12 @@ export const CheckboxGroup = ({
         props: {
           ...x.props,
           onChangeGroup: handleChangeValueToGroup,
-          defaultChecked: data.find(y => y == x.props.data),
+          defaultChecked: data == x.props.data,
+          name: name,
         },
       }
       if (value) {
-        childrenConvert['props']['checked'] = data.find(y => y == x.props.data) ? true : false
+        childrenConvert['props']['checked'] = data == x.props.data ? true : false
       }
       return childrenConvert
     })
@@ -83,7 +87,7 @@ export const CheckboxGroup = ({
   return <>{childrenShow}</>
 }
 
-const Checkbox = ({
+const Radio = ({
   id,
   onChange,
   children,
@@ -94,34 +98,35 @@ const Checkbox = ({
   data,
   className,
   disabled,
+  name,
 }: IProps) => {
   const ref = useRef(null)
   const handleChange = useCallback((e: any) => {
     if (checked == undefined) {
       if (!disabled) {
         if (onChange) {
-          onChange(e.target.checked)
+          onChange(e.target.value)
         }
         if (refElement) {
-          refElement.current.changeValue(e.target.checked)
+          refElement.current.changeValue(e.target.value)
         }
-        onChangeGroup && onChangeGroup(e.target.checked, e.target.value)
+        onChangeGroup && onChangeGroup(e.target.value)
       }
     }
   }, [])
-  const controlValue = (checked: boolean) => {
-    if (typeof checked !== 'boolean') throw new Error('Error: Checkbox only accepts boolean value.')
-    ref.current.checked = checked
+  const controlValue = (value: string) => {
+    // if (typeof checked !== 'boolean') throw new Error('Error: Radio only accepts boolean value.')
+    ref.current.checked = value == data
   }
   if (refElement) {
     refElement.current.setValue = controlValue
   }
   return (
-    <div className={`checkbox ${className || ''} ${disabled ? 'checkbox-disabled' : ''}`}>
+    <div className={`radio ${className || ''} ${disabled ? 'radio-disabled' : ''}`}>
       <input
-        className={`checkbox-input`}
-        type="checkbox"
-        name=""
+        className={`radio-input`}
+        type="radio"
+        name={name}
         value={data}
         id={id || data}
         onChange={handleChange}
@@ -130,11 +135,11 @@ const Checkbox = ({
         ref={ref}
         disabled={disabled}
       />
-      <label htmlFor={id || data} className="checkbox-label">
-        <span className="checkbox-label-inner"></span> {children}
+      <label htmlFor={id || data} className="radio-label">
+        <span className="radio-label-inner"></span> {children}
       </label>
     </div>
   )
 }
-Checkbox.Group = CheckboxGroup
-export default Checkbox
+Radio.Group = RadioGroup
+export default Radio

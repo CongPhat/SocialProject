@@ -9,6 +9,7 @@ import Option from './Option'
 import Checkbox from './Checkbox'
 import { CheckboxGroup } from './Checkbox'
 import Empty from './Empty'
+import Radio from './Radio'
 
 // const { Select, Option } = SelectElement
 
@@ -67,6 +68,12 @@ const Form = () => {
   }
   const handleChangeCheckboxGroup = values => {
     console.log(values, 'handleChangeCheckboxGroup')
+  }
+  const handleChangeRadioGroup = values => {
+    console.log(values, 'handleChangeRadioGroup')
+  }
+  const handleChangeRadio = value => {
+    console.log(value, 'handleChangeRadio')
   }
   return (
     <>
@@ -145,7 +152,7 @@ const Form = () => {
           key={'item4'}
           name={'test4'}
           label="CheckboxGroup"
-          initialValue={['1234']}
+          initialValue={['12345']}
           // value={['1234']}
           // valuesProps={'checked'}
           rules={[
@@ -171,7 +178,26 @@ const Form = () => {
         </FormItem>
 
         <div>
-          {/* <FormItem
+          <FormItem
+            key={'item6'}
+            name={'test6'}
+            rules={[
+              {
+                message: 'Required123123',
+                required: true,
+              },
+            ]}
+            valuesProps="checked"
+            value={'formitemradio'}
+          >
+            <Radio data="formitemradio" disabled>
+              Test formitemradio
+            </Radio>
+          </FormItem>
+        </div>
+
+        <div>
+          <FormItem
             key={'item7'}
             name={'test7'}
             rules={[
@@ -180,9 +206,15 @@ const Form = () => {
                 required: true,
               },
             ]}
+            initialValue={'12344'}
           >
-            <InputElement />
-          </FormItem> */}
+            <Radio.Group name="1234">
+              <Radio data="12344">Test</Radio>
+              <Radio data="1234444" disabled>
+                Test
+              </Radio>
+            </Radio.Group>
+          </FormItem>
         </div>
 
         {/* <FormItem
@@ -238,6 +270,12 @@ const Form = () => {
         </Checkbox>
         <Checkbox data="12345">Test124</Checkbox>
       </CheckboxGroup>
+      {/* <Radio data="123444444">Test</Radio> */}
+      {/* <Radio data="123444">Test</Radio> */}
+      {/* <Radio.Group name="1234">
+        <Radio data="12344">Test</Radio>
+        <Radio data="1234">Test</Radio>
+      </Radio.Group> */}
     </>
   )
 }
